@@ -1,0 +1,3912 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Rate_Analysis</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-01-03"><meta name="DC.source" content="Rate_Analysis.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Rate Detailed Summary</a></li><li><a href="#3">Normalized Charge Rate Plot</a></li><li><a href="#4">Final Charge Rates for Every Replicate</a></li><li><a href="#5">Final Discharge Capacity for Every Replicate</a></li><li><a href="#6">Average Normalized Charge Rate at Square Root of Every Scan Rate</a></li><li><a href="#7">Final Charge Rates (average)</a></li><li><a href="#8">Charge Efficiency at Every Scan Rate for Every Replicate</a></li><li><a href="#9">Charge Efficiency at Final Scan Rate for Every Replicate</a></li><li><a href="#10">Normalized Charge Efficiency</a></li><li><a href="#11">Average Normalized Charge Efficiency at the Highest Scan Rate</a></li><li><a href="#14">Normalized Discharge Rate</a></li><li><a href="#15">Final Discharge Rates for Every Replicate</a></li><li><a href="#16">Average Normalized Discharge Rate at Square Root of Every Scan Rate</a></li><li><a href="#17">Final Discharge Rates (average)</a></li><li><a href="#18">Polarization Analysis</a></li><li><a href="#19">Polarization Values at Scan Rate 0.1 mV/s for Every Replicate</a></li><li><a href="#20">Polarization values at scan rate 0.1 mV/s (average)</a></li><li><a href="#23">Overlay Charge Plots</a></li><li><a href="#26">2. CA</a></li><li><a href="#29">OCV Plots</a></li><li><a href="#30">OCV Average Plot</a></li></ul></div><h2 id="1">Rate Detailed Summary</h2><p>This document contains the Carbon-Lignen Phase 2 summary graphs and data analysis.</p><h2 id="3">Normalized Charge Rate Plot</h2><p>This will be a single graph with 8 lines. Each line will consist of 6 points</p><img vspace="5" hspace="5" src="Rate_Analysis_01.png" alt=""> <h2 id="4">Final Charge Rates for Every Replicate</h2><pre class="codeoutput">Final Charge Rate for Every Replicate
+Replicate 1 (AH16) of Formula Van-HT High (Control) at 0.5 mV/s: -3.651570
+Replicate 2 (AH21) of Formula Van-HT High (Control) at 0.5 mV/s: -3.622647
+Replicate 3 (AH07) of Formula Van-HT High (Control) at 0.5 mV/s: -3.826122
+
+Replicate 1 (AL13) of Formula Van-HT Low at 0.5 mV/s: -4.618417
+Replicate 2 (AL07) of Formula Van-HT Low at 0.5 mV/s: -4.532835
+Replicate 3 (AL14) of Formula Van-HT Low at 0.5 mV/s: -4.521673
+
+Replicate 1 (BH09) of Formula Van-A High at 0.5 mV/s: -3.424341
+Replicate 2 (BH16) of Formula Van-A High at 0.5 mV/s: -3.411813
+Replicate 3 (BH08) of Formula Van-A High at 0.5 mV/s: -3.130816
+
+Replicate 1 (BL15) of Formula Van-A Low at 0.5 mV/s: -4.187465
+Replicate 2 (BL04) of Formula Van-A Low at 0.5 mV/s: -4.300340
+Replicate 3 (BL02) of Formula Van-A Low at 0.5 mV/s: -4.194124
+
+Replicate 1 (CH10) of Formula Van-DCA High at 0.5 mV/s: -3.285850
+Replicate 2 (CH24) of Formula Van-DCA High at 0.5 mV/s: -3.792050
+Replicate 3 (CH22) of Formula Van-DCA High at 0.5 mV/s: -3.903330
+
+Replicate 1 (CL06) of Formula Van-DCA Low at 0.5 mV/s: -4.338272
+Replicate 2 (CL02) of Formula Van-DCA Low at 0.5 mV/s: -4.279076
+Replicate 3 (CL03) of Formula Van-DCA Low at 0.5 mV/s: -4.318249
+
+Replicate 1 (DH03) of Formula Van-A + Indulin High at 0.5 mV/s: -3.224973
+Replicate 2 (DH21) of Formula Van-A + Indulin High at 0.5 mV/s: -3.181244
+Replicate 3 (DH13) of Formula Van-A + Indulin High at 0.5 mV/s: -3.451558
+
+Replicate 1 (DL18) of Formula Van-A + Indulin Low at 0.5 mV/s: -4.246132
+Replicate 2 (DL03) of Formula Van-A + Indulin Low at 0.5 mV/s: -4.149733
+Replicate 3 (DL02) of Formula Van-A + Indulin Low at 0.5 mV/s: -4.291758
+
+Replicate 1 (EH23) of Formula S-Drill CL High at 0.5 mV/s: -4.122243
+Replicate 2 (EH03) of Formula S-Drill CL High at 0.5 mV/s: -3.560099
+Replicate 3 (EH20) of Formula S-Drill CL High at 0.5 mV/s: -3.618738
+
+Replicate 1 (EL22) of Formula S-Drill CL Low at 0.5 mV/s: -4.136566
+Replicate 2 (EL23) of Formula S-Drill CL Low at 0.5 mV/s: -4.475359
+Replicate 3 (EL08) of Formula S-Drill CL Low at 0.5 mV/s: -4.463978
+
+Replicate 1 (FH20) of Formula Indulin AT High at 0.5 mV/s: -3.025641
+Replicate 2 (FH07) of Formula Indulin AT High at 0.5 mV/s: -6.747463
+Replicate 3 (FH16) of Formula Indulin AT High at 0.5 mV/s: -3.221271
+
+Replicate 1 (FL01) of Formula Indulin AT Low at 0.5 mV/s: -4.498993
+Replicate 2 (FL25) of Formula Indulin AT Low at 0.5 mV/s: -4.246356
+Replicate 3 (FL03) of Formula Indulin AT Low at 0.5 mV/s: -4.151695
+
+-3.651570 
+-3.622647 
+-3.826122 
+-4.618417 
+-4.532835 
+-4.521673 
+-3.424341 
+-3.411813 
+-3.130816 
+-4.187465 
+-4.300340 
+-4.194124 
+-3.285850 
+-3.792050 
+-3.903330 
+-4.338272 
+-4.279076 
+-4.318249 
+-3.224973 
+-3.181244 
+-3.451558 
+-4.246132 
+-4.149733 
+-4.291758 
+-4.122243 
+-3.560099 
+-3.618738 
+-4.136566 
+-4.475359 
+-4.463978 
+-3.025641 
+-6.747463 
+-3.221271 
+-4.498993 
+-4.246356 
+-4.151695 
+
+</pre><h2 id="5">Final Discharge Capacity for Every Replicate</h2><pre class="codeoutput">
+Final Discharge Capacity for Every Replicate
+Replicate 1 (AH16) of Formula Van-HT High (Control) at 0.50 mV/s: 74.758971 
+Replicate 2 (AH21) of Formula Van-HT High (Control) at 0.50 mV/s: 76.278143 
+Replicate 3 (AH07) of Formula Van-HT High (Control) at 0.50 mV/s: 59.282396 
+
+Replicate 1 (AL13) of Formula Van-HT Low at 0.50 mV/s: 66.142584 
+Replicate 2 (AL07) of Formula Van-HT Low at 0.50 mV/s: 68.460161 
+Replicate 3 (AL14) of Formula Van-HT Low at 0.50 mV/s: 65.779649 
+
+Replicate 1 (BH09) of Formula Van-A High at 0.50 mV/s: 84.559278 
+Replicate 2 (BH16) of Formula Van-A High at 0.50 mV/s: 84.200747 
+Replicate 3 (BH08) of Formula Van-A High at 0.50 mV/s: 91.732940 
+
+Replicate 1 (BL15) of Formula Van-A Low at 0.50 mV/s: 78.617812 
+Replicate 2 (BL04) of Formula Van-A Low at 0.50 mV/s: 77.141952 
+Replicate 3 (BL02) of Formula Van-A Low at 0.50 mV/s: 75.948768 
+
+Replicate 1 (CH10) of Formula Van-DCA High at 0.50 mV/s: 106.431193 
+Replicate 2 (CH24) of Formula Van-DCA High at 0.50 mV/s: 76.564316 
+Replicate 3 (CH22) of Formula Van-DCA High at 0.50 mV/s: 69.749563 
+
+Replicate 1 (CL06) of Formula Van-DCA Low at 0.50 mV/s: 79.088273 
+Replicate 2 (CL02) of Formula Van-DCA Low at 0.50 mV/s: 77.630731 
+Replicate 3 (CL03) of Formula Van-DCA Low at 0.50 mV/s: 75.778453 
+
+Replicate 1 (DH03) of Formula Van-A + Indulin High at 0.50 mV/s: 86.147328 
+Replicate 2 (DH21) of Formula Van-A + Indulin High at 0.50 mV/s: 86.443163 
+Replicate 3 (DH13) of Formula Van-A + Indulin High at 0.50 mV/s: 76.185241 
+
+Replicate 1 (DL18) of Formula Van-A + Indulin Low at 0.50 mV/s: 71.600622 
+Replicate 2 (DL03) of Formula Van-A + Indulin Low at 0.50 mV/s: 81.616414 
+Replicate 3 (DL02) of Formula Van-A + Indulin Low at 0.50 mV/s: 79.744592 
+
+Replicate 1 (EH23) of Formula S-Drill CL High at 0.50 mV/s: 67.145208 
+Replicate 2 (EH03) of Formula S-Drill CL High at 0.50 mV/s: 82.260903 
+Replicate 3 (EH20) of Formula S-Drill CL High at 0.50 mV/s: 89.646928 
+
+Replicate 1 (EL22) of Formula S-Drill CL Low at 0.50 mV/s: 86.326115 
+Replicate 2 (EL23) of Formula S-Drill CL Low at 0.50 mV/s: 69.237464 
+Replicate 3 (EL08) of Formula S-Drill CL Low at 0.50 mV/s: 73.141434 
+
+Replicate 1 (FH20) of Formula Indulin AT High at 0.50 mV/s: 90.774650 
+Replicate 2 (FH07) of Formula Indulin AT High at 0.50 mV/s: 88.445501 
+Replicate 3 (FH16) of Formula Indulin AT High at 0.50 mV/s: 85.270940 
+
+Replicate 1 (FL01) of Formula Indulin AT Low at 0.50 mV/s: 66.320333 
+Replicate 2 (FL25) of Formula Indulin AT Low at 0.50 mV/s: 70.595109 
+Replicate 3 (FL03) of Formula Indulin AT Low at 0.50 mV/s: 79.277204 
+
+
+74.758971 
+76.278143 
+59.282396 
+
+66.142584 
+68.460161 
+65.779649 
+
+84.559278 
+84.200747 
+91.732940 
+
+78.617812 
+77.141952 
+75.948768 
+
+106.431193 
+76.564316 
+69.749563 
+
+79.088273 
+77.630731 
+75.778453 
+
+86.147328 
+86.443163 
+76.185241 
+
+71.600622 
+81.616414 
+79.744592 
+
+67.145208 
+82.260903 
+89.646928 
+
+86.326115 
+69.237464 
+73.141434 
+
+90.774650 
+88.445501 
+85.270940 
+
+66.320333 
+70.595109 
+79.277204 
+
+
+</pre><h2 id="6">Average Normalized Charge Rate at Square Root of Every Scan Rate</h2><p>Print the average A/Ah values</p><pre class="codeoutput">Formula Van-HT High (Control) at square root of scan rate 0.010000 (0.1000): -0.518353 
+Formula Van-HT High (Control) at square root of scan rate 0.020000 (0.1414): -0.716197 
+Formula Van-HT High (Control) at square root of scan rate 0.050000 (0.2236): -1.082052 
+Formula Van-HT High (Control) at square root of scan rate 0.100000 (0.3162): -1.537749 
+Formula Van-HT High (Control) at square root of scan rate 0.200000 (0.4472): -2.297907 
+Formula Van-HT High (Control) at square root of scan rate 0.500000 (0.7071): -3.700113 
+
+Formula Van-HT Low at square root of scan rate 0.010000 (0.1000): -0.614450 
+Formula Van-HT Low at square root of scan rate 0.020000 (0.1414): -0.901571 
+Formula Van-HT Low at square root of scan rate 0.050000 (0.2236): -1.380318 
+Formula Van-HT Low at square root of scan rate 0.100000 (0.3162): -1.940172 
+Formula Van-HT Low at square root of scan rate 0.200000 (0.4472): -2.842915 
+Formula Van-HT Low at square root of scan rate 0.500000 (0.7071): -4.557641 
+
+Formula Van-A High at square root of scan rate 0.010000 (0.1000): -0.470353 
+Formula Van-A High at square root of scan rate 0.020000 (0.1414): -0.638305 
+Formula Van-A High at square root of scan rate 0.050000 (0.2236): -0.963418 
+Formula Van-A High at square root of scan rate 0.100000 (0.3162): -1.407521 
+Formula Van-A High at square root of scan rate 0.200000 (0.4472): -2.099465 
+Formula Van-A High at square root of scan rate 0.500000 (0.7071): -3.322323 
+
+Formula Van-A Low at square root of scan rate 0.010000 (0.1000): -0.556208 
+Formula Van-A Low at square root of scan rate 0.020000 (0.1414): -0.797534 
+Formula Van-A Low at square root of scan rate 0.050000 (0.2236): -1.220689 
+Formula Van-A Low at square root of scan rate 0.100000 (0.3162): -1.745473 
+Formula Van-A Low at square root of scan rate 0.200000 (0.4472): -2.613590 
+Formula Van-A Low at square root of scan rate 0.500000 (0.7071): -4.227310 
+
+Formula Van-DCA High at square root of scan rate 0.010000 (0.1000): -0.488345 
+Formula Van-DCA High at square root of scan rate 0.020000 (0.1414): -0.699764 
+Formula Van-DCA High at square root of scan rate 0.050000 (0.2236): -1.073518 
+Formula Van-DCA High at square root of scan rate 0.100000 (0.3162): -1.531536 
+Formula Van-DCA High at square root of scan rate 0.200000 (0.4472): -2.282124 
+Formula Van-DCA High at square root of scan rate 0.500000 (0.7071): -3.660410 
+
+Formula Van-DCA Low at square root of scan rate 0.010000 (0.1000): -0.617460 
+Formula Van-DCA Low at square root of scan rate 0.020000 (0.1414): -0.897116 
+Formula Van-DCA Low at square root of scan rate 0.050000 (0.2236): -1.374355 
+Formula Van-DCA Low at square root of scan rate 0.100000 (0.3162): -1.897557 
+Formula Van-DCA Low at square root of scan rate 0.200000 (0.4472): -2.726560 
+Formula Van-DCA Low at square root of scan rate 0.500000 (0.7071): -4.311866 
+
+Formula Van-A + Indulin High at square root of scan rate 0.010000 (0.1000): -0.453663 
+Formula Van-A + Indulin High at square root of scan rate 0.020000 (0.1414): -0.618471 
+Formula Van-A + Indulin High at square root of scan rate 0.050000 (0.2236): -0.951391 
+Formula Van-A + Indulin High at square root of scan rate 0.100000 (0.3162): -1.377310 
+Formula Van-A + Indulin High at square root of scan rate 0.200000 (0.4472): -2.082652 
+Formula Van-A + Indulin High at square root of scan rate 0.500000 (0.7071): -3.285925 
+
+Formula Van-A + Indulin Low at square root of scan rate 0.010000 (0.1000): -0.586586 
+Formula Van-A + Indulin Low at square root of scan rate 0.020000 (0.1414): -0.834869 
+Formula Van-A + Indulin Low at square root of scan rate 0.050000 (0.2236): -1.280018 
+Formula Van-A + Indulin Low at square root of scan rate 0.100000 (0.3162): -1.797338 
+Formula Van-A + Indulin Low at square root of scan rate 0.200000 (0.4472): -2.637534 
+Formula Van-A + Indulin Low at square root of scan rate 0.500000 (0.7071): -4.229207 
+
+Formula S-Drill CL High at square root of scan rate 0.010000 (0.1000): -0.519032 
+Formula S-Drill CL High at square root of scan rate 0.020000 (0.1414): -0.747944 
+Formula S-Drill CL High at square root of scan rate 0.050000 (0.2236): -1.153206 
+Formula S-Drill CL High at square root of scan rate 0.100000 (0.3162): -1.647159 
+Formula S-Drill CL High at square root of scan rate 0.200000 (0.4472): -2.416168 
+Formula S-Drill CL High at square root of scan rate 0.500000 (0.7071): -3.767027 
+
+Formula S-Drill CL Low at square root of scan rate 0.010000 (0.1000): -0.611655 
+Formula S-Drill CL Low at square root of scan rate 0.020000 (0.1414): -0.888317 
+Formula S-Drill CL Low at square root of scan rate 0.050000 (0.2236): -1.365317 
+Formula S-Drill CL Low at square root of scan rate 0.100000 (0.3162): -1.916710 
+Formula S-Drill CL Low at square root of scan rate 0.200000 (0.4472): -2.766021 
+Formula S-Drill CL Low at square root of scan rate 0.500000 (0.7071): -4.358634 
+
+Formula Indulin AT High at square root of scan rate 0.010000 (0.1000): -0.409803 
+Formula Indulin AT High at square root of scan rate 0.020000 (0.1414): -0.584239 
+Formula Indulin AT High at square root of scan rate 0.050000 (0.2236): -0.913512 
+Formula Indulin AT High at square root of scan rate 0.100000 (0.3162): -1.329984 
+Formula Indulin AT High at square root of scan rate 0.200000 (0.4472): -2.311107 
+Formula Indulin AT High at square root of scan rate 0.500000 (0.7071): -4.331458 
+
+Formula Indulin AT Low at square root of scan rate 0.010000 (0.1000): -0.590997 
+Formula Indulin AT Low at square root of scan rate 0.020000 (0.1414): -0.847982 
+Formula Indulin AT Low at square root of scan rate 0.050000 (0.2236): -1.306715 
+Formula Indulin AT Low at square root of scan rate 0.100000 (0.3162): -1.837011 
+Formula Indulin AT Low at square root of scan rate 0.200000 (0.4472): -2.683679 
+Formula Indulin AT Low at square root of scan rate 0.500000 (0.7071): -4.299014 
+
+
+</pre><h2 id="7">Final Charge Rates (average)</h2><pre class="codeoutput">Charge rate at 0.5 mV/s of formula               Van-HT High (Control): -3.700113 
+Charge rate at 0.5 mV/s of formula                          Van-HT Low: -4.557641 
+Charge rate at 0.5 mV/s of formula                          Van-A High: -3.322323 
+Charge rate at 0.5 mV/s of formula                           Van-A Low: -4.227310 
+Charge rate at 0.5 mV/s of formula                        Van-DCA High: -3.660410 
+Charge rate at 0.5 mV/s of formula                         Van-DCA Low: -4.311866 
+Charge rate at 0.5 mV/s of formula                Van-A + Indulin High: -3.285925 
+Charge rate at 0.5 mV/s of formula                 Van-A + Indulin Low: -4.229207 
+Charge rate at 0.5 mV/s of formula                     S-Drill CL High: -3.767027 
+Charge rate at 0.5 mV/s of formula                      S-Drill CL Low: -4.358634 
+Charge rate at 0.5 mV/s of formula                     Indulin AT High: -4.331458 
+Charge rate at 0.5 mV/s of formula                      Indulin AT Low: -4.299014 
+
+-3.700113 
+-4.557641 
+-3.322323 
+-4.227310 
+-3.660410 
+-4.311866 
+-3.285925 
+-4.229207 
+-3.767027 
+-4.358634 
+-4.331458 
+-4.299014 
+</pre><h2 id="8">Charge Efficiency at Every Scan Rate for Every Replicate</h2><p>Take the integral of every interval</p><pre class="codeoutput">Integral of interval 1 of Replicate 1 of Formula Van-HT High (Control): -79.313677 
+Integral of interval 2 of Replicate 1 of Formula Van-HT High (Control): -75.875152 
+Integral of interval 3 of Replicate 1 of Formula Van-HT High (Control): -76.769001 
+Integral of interval 4 of Replicate 1 of Formula Van-HT High (Control): -69.595419 
+Integral of interval 5 of Replicate 1 of Formula Van-HT High (Control): -61.098365 
+Integral of interval 6 of Replicate 1 of Formula Van-HT High (Control): -48.127329 
+Integral of interval 1 of Replicate 2 of Formula Van-HT High (Control): -76.593320 
+Integral of interval 2 of Replicate 2 of Formula Van-HT High (Control): -74.795716 
+Integral of interval 3 of Replicate 2 of Formula Van-HT High (Control): -76.484396 
+Integral of interval 4 of Replicate 2 of Formula Van-HT High (Control): -71.592511 
+Integral of interval 5 of Replicate 2 of Formula Van-HT High (Control): -62.155038 
+Integral of interval 6 of Replicate 2 of Formula Van-HT High (Control): -48.637170 
+Integral of interval 1 of Replicate 3 of Formula Van-HT High (Control): -57.993796 
+Integral of interval 2 of Replicate 3 of Formula Van-HT High (Control): -56.009654 
+Integral of interval 3 of Replicate 3 of Formula Van-HT High (Control): -57.956774 
+Integral of interval 4 of Replicate 3 of Formula Van-HT High (Control): -56.246684 
+Integral of interval 5 of Replicate 3 of Formula Van-HT High (Control): -49.877857 
+Integral of interval 6 of Replicate 3 of Formula Van-HT High (Control): -39.628722 
+Integral of interval 1 of Replicate 1 of Formula Van-HT Low: -77.779886 
+Integral of interval 2 of Replicate 1 of Formula Van-HT Low: -68.694731 
+Integral of interval 3 of Replicate 1 of Formula Van-HT Low: -68.448702 
+Integral of interval 4 of Replicate 1 of Formula Van-HT Low: -65.693913 
+Integral of interval 5 of Replicate 1 of Formula Van-HT Low: -60.097550 
+Integral of interval 6 of Replicate 1 of Formula Van-HT Low: -48.619097 
+Integral of interval 1 of Replicate 2 of Formula Van-HT Low: -79.950684 
+Integral of interval 2 of Replicate 2 of Formula Van-HT Low: -72.380938 
+Integral of interval 3 of Replicate 2 of Formula Van-HT Low: -71.393131 
+Integral of interval 4 of Replicate 2 of Formula Van-HT Low: -69.141820 
+Integral of interval 5 of Replicate 2 of Formula Van-HT Low: -62.895764 
+Integral of interval 6 of Replicate 2 of Formula Van-HT Low: -49.761969 
+Integral of interval 1 of Replicate 3 of Formula Van-HT Low: -76.425579 
+Integral of interval 2 of Replicate 3 of Formula Van-HT Low: -67.998856 
+Integral of interval 3 of Replicate 3 of Formula Van-HT Low: -67.381885 
+Integral of interval 4 of Replicate 3 of Formula Van-HT Low: -65.320058 
+Integral of interval 5 of Replicate 3 of Formula Van-HT Low: -59.395947 
+Integral of interval 6 of Replicate 3 of Formula Van-HT Low: -47.666564 
+Integral of interval 1 of Replicate 1 of Formula Van-A High: -85.111800 
+Integral of interval 2 of Replicate 1 of Formula Van-A High: -81.281683 
+Integral of interval 3 of Replicate 1 of Formula Van-A High: -86.056902 
+Integral of interval 4 of Replicate 1 of Formula Van-A High: -73.979595 
+Integral of interval 5 of Replicate 1 of Formula Van-A High: -71.189958 
+Integral of interval 6 of Replicate 1 of Formula Van-A High: -51.722405 
+Integral of interval 1 of Replicate 2 of Formula Van-A High: -85.059255 
+Integral of interval 2 of Replicate 2 of Formula Van-A High: -85.409764 
+Integral of interval 3 of Replicate 2 of Formula Van-A High: -86.693812 
+Integral of interval 4 of Replicate 2 of Formula Van-A High: -81.713946 
+Integral of interval 5 of Replicate 2 of Formula Van-A High: -70.859304 
+Integral of interval 6 of Replicate 2 of Formula Van-A High: -52.031881 
+Integral of interval 1 of Replicate 3 of Formula Van-A High: -92.253445 
+Integral of interval 2 of Replicate 3 of Formula Van-A High: -91.991164 
+Integral of interval 3 of Replicate 3 of Formula Van-A High: -93.173210 
+Integral of interval 4 of Replicate 3 of Formula Van-A High: -83.366192 
+Integral of interval 5 of Replicate 3 of Formula Van-A High: -70.969562 
+Integral of interval 6 of Replicate 3 of Formula Van-A High: -52.154749 
+Integral of interval 1 of Replicate 1 of Formula Van-A Low: -86.297064 
+Integral of interval 2 of Replicate 1 of Formula Van-A Low: -79.843313 
+Integral of interval 3 of Replicate 1 of Formula Van-A Low: -80.361331 
+Integral of interval 4 of Replicate 1 of Formula Van-A Low: -76.886094 
+Integral of interval 5 of Replicate 1 of Formula Van-A Low: -70.533860 
+Integral of interval 6 of Replicate 1 of Formula Van-A Low: -55.437893 
+Integral of interval 1 of Replicate 2 of Formula Van-A Low: -85.648792 
+Integral of interval 2 of Replicate 2 of Formula Van-A Low: -80.886049 
+Integral of interval 3 of Replicate 2 of Formula Van-A Low: -80.073533 
+Integral of interval 4 of Replicate 2 of Formula Van-A Low: -77.874903 
+Integral of interval 5 of Replicate 2 of Formula Van-A Low: -70.529334 
+Integral of interval 6 of Replicate 2 of Formula Van-A Low: -55.620914 
+Integral of interval 1 of Replicate 3 of Formula Van-A Low: -90.050629 
+Integral of interval 2 of Replicate 3 of Formula Van-A Low: -79.804607 
+Integral of interval 3 of Replicate 3 of Formula Van-A Low: -79.138729 
+Integral of interval 4 of Replicate 3 of Formula Van-A Low: -76.246415 
+Integral of interval 5 of Replicate 3 of Formula Van-A Low: -68.776337 
+Integral of interval 6 of Replicate 3 of Formula Van-A Low: -53.948838 
+Integral of interval 1 of Replicate 1 of Formula Van-DCA High: -101.634388 
+Integral of interval 2 of Replicate 1 of Formula Van-DCA High: -99.744089 
+Integral of interval 3 of Replicate 1 of Formula Van-DCA High: -103.181525 
+Integral of interval 4 of Replicate 1 of Formula Van-DCA High: -93.300219 
+Integral of interval 5 of Replicate 1 of Formula Van-DCA High: -80.476427 
+Integral of interval 6 of Replicate 1 of Formula Van-DCA High: -62.795032 
+Integral of interval 1 of Replicate 2 of Formula Van-DCA High: -86.736183 
+Integral of interval 2 of Replicate 2 of Formula Van-DCA High: -82.315466 
+Integral of interval 3 of Replicate 2 of Formula Van-DCA High: -84.643819 
+Integral of interval 4 of Replicate 2 of Formula Van-DCA High: -79.134158 
+Integral of interval 5 of Replicate 2 of Formula Van-DCA High: -68.450763 
+Integral of interval 6 of Replicate 2 of Formula Van-DCA High: -52.386634 
+Integral of interval 1 of Replicate 3 of Formula Van-DCA High: -73.262090 
+Integral of interval 2 of Replicate 3 of Formula Van-DCA High: -69.631327 
+Integral of interval 3 of Replicate 3 of Formula Van-DCA High: -71.846301 
+Integral of interval 4 of Replicate 3 of Formula Van-DCA High: -69.796073 
+Integral of interval 5 of Replicate 3 of Formula Van-DCA High: -61.705113 
+Integral of interval 6 of Replicate 3 of Formula Van-DCA High: -48.350735 
+Integral of interval 1 of Replicate 1 of Formula Van-DCA Low: -89.293253 
+Integral of interval 2 of Replicate 1 of Formula Van-DCA Low: -80.530685 
+Integral of interval 3 of Replicate 1 of Formula Van-DCA Low: -80.917349 
+Integral of interval 4 of Replicate 1 of Formula Van-DCA Low: -76.552789 
+Integral of interval 5 of Replicate 1 of Formula Van-DCA Low: -68.377797 
+Integral of interval 6 of Replicate 1 of Formula Van-DCA Low: -53.514454 
+Integral of interval 1 of Replicate 2 of Formula Van-DCA Low: -88.914491 
+Integral of interval 2 of Replicate 2 of Formula Van-DCA Low: -79.021334 
+Integral of interval 3 of Replicate 2 of Formula Van-DCA Low: -78.894323 
+Integral of interval 4 of Replicate 2 of Formula Van-DCA Low: -77.444786 
+Integral of interval 5 of Replicate 2 of Formula Van-DCA Low: -68.707855 
+Integral of interval 6 of Replicate 2 of Formula Van-DCA Low: -53.462406 
+Integral of interval 1 of Replicate 3 of Formula Van-DCA Low: -88.848370 
+Integral of interval 2 of Replicate 3 of Formula Van-DCA Low: -77.067079 
+Integral of interval 3 of Replicate 3 of Formula Van-DCA Low: -76.507151 
+Integral of interval 4 of Replicate 3 of Formula Van-DCA Low: -74.071881 
+Integral of interval 5 of Replicate 3 of Formula Van-DCA Low: -66.471621 
+Integral of interval 6 of Replicate 3 of Formula Van-DCA Low: -52.594785 
+Integral of interval 1 of Replicate 1 of Formula Van-A + Indulin High: -89.621780 
+Integral of interval 2 of Replicate 1 of Formula Van-A + Indulin High: -85.978950 
+Integral of interval 3 of Replicate 1 of Formula Van-A + Indulin High: -87.336906 
+Integral of interval 4 of Replicate 1 of Formula Van-A + Indulin High: -81.229537 
+Integral of interval 5 of Replicate 1 of Formula Van-A + Indulin High: -70.405127 
+Integral of interval 6 of Replicate 1 of Formula Van-A + Indulin High: -50.462159 
+Integral of interval 1 of Replicate 2 of Formula Van-A + Indulin High: -89.798925 
+Integral of interval 2 of Replicate 2 of Formula Van-A + Indulin High: -86.203056 
+Integral of interval 3 of Replicate 2 of Formula Van-A + Indulin High: -88.495427 
+Integral of interval 4 of Replicate 2 of Formula Van-A + Indulin High: -83.932183 
+Integral of interval 5 of Replicate 2 of Formula Van-A + Indulin High: -71.943553 
+Integral of interval 6 of Replicate 2 of Formula Van-A + Indulin High: -50.307089 
+Integral of interval 1 of Replicate 3 of Formula Van-A + Indulin High: -81.884216 
+Integral of interval 2 of Replicate 3 of Formula Van-A + Indulin High: -77.053055 
+Integral of interval 3 of Replicate 3 of Formula Van-A + Indulin High: -77.570646 
+Integral of interval 4 of Replicate 3 of Formula Van-A + Indulin High: -73.113326 
+Integral of interval 5 of Replicate 3 of Formula Van-A + Indulin High: -65.004251 
+Integral of interval 6 of Replicate 3 of Formula Van-A + Indulin High: -47.551721 
+Integral of interval 1 of Replicate 1 of Formula Van-A + Indulin Low: -78.978707 
+Integral of interval 2 of Replicate 1 of Formula Van-A + Indulin Low: -71.100588 
+Integral of interval 3 of Replicate 1 of Formula Van-A + Indulin Low: -71.891524 
+Integral of interval 4 of Replicate 1 of Formula Van-A + Indulin Low: -69.331364 
+Integral of interval 5 of Replicate 1 of Formula Van-A + Indulin Low: -64.028697 
+Integral of interval 6 of Replicate 1 of Formula Van-A + Indulin Low: -50.081954 
+Integral of interval 1 of Replicate 2 of Formula Van-A + Indulin Low: -90.253058 
+Integral of interval 2 of Replicate 2 of Formula Van-A + Indulin Low: -81.864143 
+Integral of interval 3 of Replicate 2 of Formula Van-A + Indulin Low: -81.744358 
+Integral of interval 4 of Replicate 2 of Formula Van-A + Indulin Low: -79.874796 
+Integral of interval 5 of Replicate 2 of Formula Van-A + Indulin Low: -72.638011 
+Integral of interval 6 of Replicate 2 of Formula Van-A + Indulin Low: -56.712810 
+Integral of interval 1 of Replicate 3 of Formula Van-A + Indulin Low: -91.135431 
+Integral of interval 2 of Replicate 3 of Formula Van-A + Indulin Low: -81.220260 
+Integral of interval 3 of Replicate 3 of Formula Van-A + Indulin Low: -80.819213 
+Integral of interval 4 of Replicate 3 of Formula Van-A + Indulin Low: -78.534757 
+Integral of interval 5 of Replicate 3 of Formula Van-A + Indulin Low: -71.028331 
+Integral of interval 6 of Replicate 3 of Formula Van-A + Indulin Low: -56.340135 
+Integral of interval 1 of Replicate 1 of Formula S-Drill CL High: -67.795792 
+Integral of interval 2 of Replicate 1 of Formula S-Drill CL High: -64.884653 
+Integral of interval 3 of Replicate 1 of Formula S-Drill CL High: -66.259195 
+Integral of interval 4 of Replicate 1 of Formula S-Drill CL High: -65.179832 
+Integral of interval 5 of Replicate 1 of Formula S-Drill CL High: -59.615592 
+Integral of interval 6 of Replicate 1 of Formula S-Drill CL High: -46.210454 
+Integral of interval 1 of Replicate 2 of Formula S-Drill CL High: -112.095679 
+Integral of interval 2 of Replicate 2 of Formula S-Drill CL High: -82.154109 
+Integral of interval 3 of Replicate 2 of Formula S-Drill CL High: -83.986330 
+Integral of interval 4 of Replicate 2 of Formula S-Drill CL High: -79.795400 
+Integral of interval 5 of Replicate 2 of Formula S-Drill CL High: -68.999506 
+Integral of interval 6 of Replicate 2 of Formula S-Drill CL High: -51.708734 
+Integral of interval 1 of Replicate 3 of Formula S-Drill CL High: -108.694027 
+Integral of interval 2 of Replicate 3 of Formula S-Drill CL High: -88.352139 
+Integral of interval 3 of Replicate 3 of Formula S-Drill CL High: -90.614489 
+Integral of interval 4 of Replicate 3 of Formula S-Drill CL High: -85.904639 
+Integral of interval 5 of Replicate 3 of Formula S-Drill CL High: -76.370114 
+Integral of interval 6 of Replicate 3 of Formula S-Drill CL High: -56.419640 
+Integral of interval 1 of Replicate 1 of Formula S-Drill CL Low: -92.247056 
+Integral of interval 2 of Replicate 1 of Formula S-Drill CL Low: -85.806777 
+Integral of interval 3 of Replicate 1 of Formula S-Drill CL Low: -85.961814 
+Integral of interval 4 of Replicate 1 of Formula S-Drill CL Low: -83.687710 
+Integral of interval 5 of Replicate 1 of Formula S-Drill CL Low: -74.624077 
+Integral of interval 6 of Replicate 1 of Formula S-Drill CL Low: -58.812876 
+Integral of interval 1 of Replicate 2 of Formula S-Drill CL Low: -79.684812 
+Integral of interval 2 of Replicate 2 of Formula S-Drill CL Low: -70.660789 
+Integral of interval 3 of Replicate 2 of Formula S-Drill CL Low: -69.977433 
+Integral of interval 4 of Replicate 2 of Formula S-Drill CL Low: -68.985932 
+Integral of interval 5 of Replicate 2 of Formula S-Drill CL Low: -63.160232 
+Integral of interval 6 of Replicate 2 of Formula S-Drill CL Low: -49.733232 
+Integral of interval 1 of Replicate 3 of Formula S-Drill CL Low: -79.683683 
+Integral of interval 2 of Replicate 3 of Formula S-Drill CL Low: -72.066170 
+Integral of interval 3 of Replicate 3 of Formula S-Drill CL Low: -72.507412 
+Integral of interval 4 of Replicate 3 of Formula S-Drill CL Low: -71.476698 
+Integral of interval 5 of Replicate 3 of Formula S-Drill CL Low: -66.254092 
+Integral of interval 6 of Replicate 3 of Formula S-Drill CL Low: -52.023837 
+Integral of interval 1 of Replicate 1 of Formula Indulin AT High: -98.636478 
+Integral of interval 2 of Replicate 1 of Formula Indulin AT High: -92.872987 
+Integral of interval 3 of Replicate 1 of Formula Indulin AT High: -93.063926 
+Integral of interval 4 of Replicate 1 of Formula Indulin AT High: -85.341097 
+Integral of interval 5 of Replicate 1 of Formula Indulin AT High: -71.410114 
+Integral of interval 6 of Replicate 1 of Formula Indulin AT High: -49.384511 
+Integral of interval 1 of Replicate 2 of Formula Indulin AT High: -100.546478 
+Integral of interval 2 of Replicate 2 of Formula Indulin AT High: -84.764243 
+Integral of interval 3 of Replicate 2 of Formula Indulin AT High: -83.228020 
+Integral of interval 4 of Replicate 2 of Formula Indulin AT High: -76.936178 
+Integral of interval 5 of Replicate 2 of Formula Indulin AT High: -65.687586 
+Integral of interval 6 of Replicate 2 of Formula Indulin AT High: -45.091155 
+Integral of interval 1 of Replicate 3 of Formula Indulin AT High: -91.315324 
+Integral of interval 2 of Replicate 3 of Formula Indulin AT High: -84.206041 
+Integral of interval 3 of Replicate 3 of Formula Indulin AT High: -85.908488 
+Integral of interval 4 of Replicate 3 of Formula Indulin AT High: -81.476141 
+Integral of interval 5 of Replicate 3 of Formula Indulin AT High: -69.982147 
+Integral of interval 6 of Replicate 3 of Formula Indulin AT High: -49.038069 
+Integral of interval 1 of Replicate 1 of Formula Indulin AT Low: -76.604752 
+Integral of interval 2 of Replicate 1 of Formula Indulin AT Low: -69.658969 
+Integral of interval 3 of Replicate 1 of Formula Indulin AT Low: -68.422874 
+Integral of interval 4 of Replicate 1 of Formula Indulin AT Low: -66.456841 
+Integral of interval 5 of Replicate 1 of Formula Indulin AT Low: -60.334450 
+Integral of interval 6 of Replicate 1 of Formula Indulin AT Low: -48.275059 
+Integral of interval 1 of Replicate 2 of Formula Indulin AT Low: -79.435092 
+Integral of interval 2 of Replicate 2 of Formula Indulin AT Low: -71.540923 
+Integral of interval 3 of Replicate 2 of Formula Indulin AT Low: -71.393206 
+Integral of interval 4 of Replicate 2 of Formula Indulin AT Low: -69.830365 
+Integral of interval 5 of Replicate 2 of Formula Indulin AT Low: -63.234955 
+Integral of interval 6 of Replicate 2 of Formula Indulin AT Low: -49.619792 
+Integral of interval 1 of Replicate 3 of Formula Indulin AT Low: -89.730992 
+Integral of interval 2 of Replicate 3 of Formula Indulin AT Low: -80.258705 
+Integral of interval 3 of Replicate 3 of Formula Indulin AT Low: -80.275495 
+Integral of interval 4 of Replicate 3 of Formula Indulin AT Low: -77.795524 
+Integral of interval 5 of Replicate 3 of Formula Indulin AT Low: -70.303510 
+Integral of interval 6 of Replicate 3 of Formula Indulin AT Low: -54.536016 
+
+Charge Efficiency at Every Scan Rate
+Replicate 1 (AH) of Formula Van-HT High (Control) at 0.01 mV/s: 103.326291%
+Replicate 1 (AH) of Formula Van-HT High (Control) at 0.02 mV/s: 103.264360%
+Replicate 1 (AH) of Formula Van-HT High (Control) at 0.05 mV/s: 102.443895%
+Replicate 1 (AH) of Formula Van-HT High (Control) at 0.10 mV/s: 94.057368%
+Replicate 1 (AH) of Formula Van-HT High (Control) at 0.20 mV/s: 82.639838%
+Replicate 1 (AH) of Formula Van-HT High (Control) at 0.50 mV/s: 64.376661%
+Replicate 2 (AH) of Formula Van-HT High (Control) at 0.01 mV/s: 104.128561%
+Replicate 2 (AH) of Formula Van-HT High (Control) at 0.02 mV/s: 102.004226%
+Replicate 2 (AH) of Formula Van-HT High (Control) at 0.05 mV/s: 101.773275%
+Replicate 2 (AH) of Formula Van-HT High (Control) at 0.10 mV/s: 94.396802%
+Replicate 2 (AH) of Formula Van-HT High (Control) at 0.20 mV/s: 81.553097%
+Replicate 2 (AH) of Formula Van-HT High (Control) at 0.50 mV/s: 63.762919%
+Replicate 3 (AH) of Formula Van-HT High (Control) at 0.01 mV/s: 103.716966%
+Replicate 3 (AH) of Formula Van-HT High (Control) at 0.02 mV/s: 102.418057%
+Replicate 3 (AH) of Formula Van-HT High (Control) at 0.05 mV/s: 102.051430%
+Replicate 3 (AH) of Formula Van-HT High (Control) at 0.10 mV/s: 98.800874%
+Replicate 3 (AH) of Formula Van-HT High (Control) at 0.20 mV/s: 86.807075%
+Replicate 3 (AH) of Formula Van-HT High (Control) at 0.50 mV/s: 66.847369%
+
+Replicate 1 (AL) of Formula Van-HT Low at 0.01 mV/s: 102.803670%
+Replicate 1 (AL) of Formula Van-HT Low at 0.02 mV/s: 102.373153%
+Replicate 1 (AL) of Formula Van-HT Low at 0.05 mV/s: 102.095660%
+Replicate 1 (AL) of Formula Van-HT Low at 0.10 mV/s: 99.772173%
+Replicate 1 (AL) of Formula Van-HT Low at 0.20 mV/s: 91.424285%
+Replicate 1 (AL) of Formula Van-HT Low at 0.50 mV/s: 73.506498%
+Replicate 2 (AL) of Formula Van-HT Low at 0.01 mV/s: 102.969166%
+Replicate 2 (AL) of Formula Van-HT Low at 0.02 mV/s: 102.581324%
+Replicate 2 (AL) of Formula Van-HT Low at 0.05 mV/s: 102.746426%
+Replicate 2 (AL) of Formula Van-HT Low at 0.10 mV/s: 100.193689%
+Replicate 2 (AL) of Formula Van-HT Low at 0.20 mV/s: 91.112469%
+Replicate 2 (AL) of Formula Van-HT Low at 0.50 mV/s: 72.687485%
+Replicate 3 (AL) of Formula Van-HT Low at 0.01 mV/s: 102.974772%
+Replicate 3 (AL) of Formula Van-HT Low at 0.02 mV/s: 102.187882%
+Replicate 3 (AL) of Formula Van-HT Low at 0.05 mV/s: 102.152062%
+Replicate 3 (AL) of Formula Van-HT Low at 0.10 mV/s: 100.148534%
+Replicate 3 (AL) of Formula Van-HT Low at 0.20 mV/s: 91.209963%
+Replicate 3 (AL) of Formula Van-HT Low at 0.50 mV/s: 72.463999%
+
+Replicate 1 (BH) of Formula Van-A High at 0.01 mV/s: 104.844873%
+Replicate 1 (BH) of Formula Van-A High at 0.02 mV/s: 103.296543%
+Replicate 1 (BH) of Formula Van-A High at 0.05 mV/s: 102.024685%
+Replicate 1 (BH) of Formula Van-A High at 0.10 mV/s: 97.061825%
+Replicate 1 (BH) of Formula Van-A High at 0.20 mV/s: 85.453323%
+Replicate 1 (BH) of Formula Van-A High at 0.50 mV/s: 61.167037%
+Replicate 2 (BH) of Formula Van-A High at 0.01 mV/s: 103.904733%
+Replicate 2 (BH) of Formula Van-A High at 0.02 mV/s: 100.326717%
+Replicate 2 (BH) of Formula Van-A High at 0.05 mV/s: 100.287775%
+Replicate 2 (BH) of Formula Van-A High at 0.10 mV/s: 95.436128%
+Replicate 2 (BH) of Formula Van-A High at 0.20 mV/s: 83.417590%
+Replicate 2 (BH) of Formula Van-A High at 0.50 mV/s: 61.795034%
+Replicate 3 (BH) of Formula Van-A High at 0.01 mV/s: 103.518252%
+Replicate 3 (BH) of Formula Van-A High at 0.02 mV/s: 102.498608%
+Replicate 3 (BH) of Formula Van-A High at 0.05 mV/s: 101.610201%
+Replicate 3 (BH) of Formula Van-A High at 0.10 mV/s: 91.881816%
+Replicate 3 (BH) of Formula Van-A High at 0.20 mV/s: 78.160713%
+Replicate 3 (BH) of Formula Van-A High at 0.50 mV/s: 56.854985%
+
+Replicate 1 (BL) of Formula Van-A Low at 0.01 mV/s: 102.827048%
+Replicate 1 (BL) of Formula Van-A Low at 0.02 mV/s: 102.392249%
+Replicate 1 (BL) of Formula Van-A Low at 0.05 mV/s: 102.134079%
+Replicate 1 (BL) of Formula Van-A Low at 0.10 mV/s: 99.129974%
+Replicate 1 (BL) of Formula Van-A Low at 0.20 mV/s: 90.214418%
+Replicate 1 (BL) of Formula Van-A Low at 0.50 mV/s: 70.515691%
+Replicate 2 (BL) of Formula Van-A Low at 0.01 mV/s: 102.519719%
+Replicate 2 (BL) of Formula Van-A Low at 0.02 mV/s: 100.128313%
+Replicate 2 (BL) of Formula Van-A Low at 0.05 mV/s: 100.173085%
+Replicate 2 (BL) of Formula Van-A Low at 0.10 mV/s: 98.865284%
+Replicate 2 (BL) of Formula Van-A Low at 0.20 mV/s: 90.346017%
+Replicate 2 (BL) of Formula Van-A Low at 0.50 mV/s: 72.102031%
+Replicate 3 (BL) of Formula Van-A Low at 0.01 mV/s: 108.020943%
+Replicate 3 (BL) of Formula Van-A Low at 0.02 mV/s: 102.959564%
+Replicate 3 (BL) of Formula Van-A Low at 0.05 mV/s: 102.497799%
+Replicate 3 (BL) of Formula Van-A Low at 0.10 mV/s: 100.064062%
+Replicate 3 (BL) of Formula Van-A Low at 0.20 mV/s: 90.711673%
+Replicate 3 (BL) of Formula Van-A Low at 0.50 mV/s: 71.033197%
+
+Replicate 1 (CH) of Formula Van-DCA High at 0.01 mV/s: 102.554516%
+Replicate 1 (CH) of Formula Van-DCA High at 0.02 mV/s: 102.339779%
+Replicate 1 (CH) of Formula Van-DCA High at 0.05 mV/s: 101.383841%
+Replicate 1 (CH) of Formula Van-DCA High at 0.10 mV/s: 90.975653%
+Replicate 1 (CH) of Formula Van-DCA High at 0.20 mV/s: 76.666275%
+Replicate 1 (CH) of Formula Van-DCA High at 0.50 mV/s: 59.000590%
+Replicate 2 (CH) of Formula Van-DCA High at 0.01 mV/s: 103.807999%
+Replicate 2 (CH) of Formula Van-DCA High at 0.02 mV/s: 103.820948%
+Replicate 2 (CH) of Formula Van-DCA High at 0.05 mV/s: 105.404388%
+Replicate 2 (CH) of Formula Van-DCA High at 0.10 mV/s: 99.772153%
+Replicate 2 (CH) of Formula Van-DCA High at 0.20 mV/s: 87.868061%
+Replicate 2 (CH) of Formula Van-DCA High at 0.50 mV/s: 68.421735%
+Replicate 3 (CH) of Formula Van-DCA High at 0.01 mV/s: 103.849946%
+Replicate 3 (CH) of Formula Van-DCA High at 0.02 mV/s: 103.085468%
+Replicate 3 (CH) of Formula Van-DCA High at 0.05 mV/s: 103.757491%
+Replicate 3 (CH) of Formula Van-DCA High at 0.10 mV/s: 100.913863%
+Replicate 3 (CH) of Formula Van-DCA High at 0.20 mV/s: 89.095227%
+Replicate 3 (CH) of Formula Van-DCA High at 0.50 mV/s: 69.320484%
+
+Replicate 1 (CL) of Formula Van-DCA Low at 0.01 mV/s: 102.717883%
+Replicate 1 (CL) of Formula Van-DCA Low at 0.02 mV/s: 102.612627%
+Replicate 1 (CL) of Formula Van-DCA Low at 0.05 mV/s: 102.929203%
+Replicate 1 (CL) of Formula Van-DCA Low at 0.10 mV/s: 99.053941%
+Replicate 1 (CL) of Formula Van-DCA Low at 0.20 mV/s: 88.068464%
+Replicate 1 (CL) of Formula Van-DCA Low at 0.50 mV/s: 67.664209%
+Replicate 2 (CL) of Formula Van-DCA Low at 0.01 mV/s: 102.366408%
+Replicate 2 (CL) of Formula Van-DCA Low at 0.02 mV/s: 101.996425%
+Replicate 2 (CL) of Formula Van-DCA Low at 0.05 mV/s: 101.869174%
+Replicate 2 (CL) of Formula Van-DCA Low at 0.10 mV/s: 100.056770%
+Replicate 2 (CL) of Formula Van-DCA Low at 0.20 mV/s: 88.720450%
+Replicate 2 (CL) of Formula Van-DCA Low at 0.50 mV/s: 68.867580%
+Replicate 3 (CL) of Formula Van-DCA Low at 0.01 mV/s: 104.005029%
+Replicate 3 (CL) of Formula Van-DCA Low at 0.02 mV/s: 102.047799%
+Replicate 3 (CL) of Formula Van-DCA Low at 0.05 mV/s: 101.881495%
+Replicate 3 (CL) of Formula Van-DCA Low at 0.10 mV/s: 99.581362%
+Replicate 3 (CL) of Formula Van-DCA Low at 0.20 mV/s: 89.018600%
+Replicate 3 (CL) of Formula Van-DCA Low at 0.50 mV/s: 69.405990%
+
+Replicate 1 (DH) of Formula Van-A + Indulin High at 0.01 mV/s: 103.174606%
+Replicate 1 (DH) of Formula Van-A + Indulin High at 0.02 mV/s: 99.793079%
+Replicate 1 (DH) of Formula Van-A + Indulin High at 0.05 mV/s: 100.166454%
+Replicate 1 (DH) of Formula Van-A + Indulin High at 0.10 mV/s: 94.240301%
+Replicate 1 (DH) of Formula Van-A + Indulin High at 0.20 mV/s: 81.774603%
+Replicate 1 (DH) of Formula Van-A + Indulin High at 0.50 mV/s: 58.576581%
+Replicate 2 (DH) of Formula Van-A + Indulin High at 0.01 mV/s: 102.923000%
+Replicate 2 (DH) of Formula Van-A + Indulin High at 0.02 mV/s: 102.414790%
+Replicate 2 (DH) of Formula Van-A + Indulin High at 0.05 mV/s: 102.079908%
+Replicate 2 (DH) of Formula Van-A + Indulin High at 0.10 mV/s: 96.792007%
+Replicate 2 (DH) of Formula Van-A + Indulin High at 0.20 mV/s: 82.925424%
+Replicate 2 (DH) of Formula Van-A + Indulin High at 0.50 mV/s: 58.196724%
+Replicate 3 (DH) of Formula Van-A + Indulin High at 0.01 mV/s: 102.979745%
+Replicate 3 (DH) of Formula Van-A + Indulin High at 0.02 mV/s: 98.975285%
+Replicate 3 (DH) of Formula Van-A + Indulin High at 0.05 mV/s: 99.006553%
+Replicate 3 (DH) of Formula Van-A + Indulin High at 0.10 mV/s: 94.944314%
+Replicate 3 (DH) of Formula Van-A + Indulin High at 0.20 mV/s: 85.103063%
+Replicate 3 (DH) of Formula Van-A + Indulin High at 0.50 mV/s: 62.415923%
+
+Replicate 1 (DL) of Formula Van-A + Indulin Low at 0.01 mV/s: 102.382301%
+Replicate 1 (DL) of Formula Van-A + Indulin Low at 0.02 mV/s: 99.355849%
+Replicate 1 (DL) of Formula Van-A + Indulin Low at 0.05 mV/s: 99.687853%
+Replicate 1 (DL) of Formula Van-A + Indulin Low at 0.10 mV/s: 97.449312%
+Replicate 1 (DL) of Formula Van-A + Indulin Low at 0.20 mV/s: 89.563032%
+Replicate 1 (DL) of Formula Van-A + Indulin Low at 0.50 mV/s: 69.946255%
+Replicate 2 (DL) of Formula Van-A + Indulin Low at 0.01 mV/s: 102.950918%
+Replicate 2 (DL) of Formula Van-A + Indulin Low at 0.02 mV/s: 102.007848%
+Replicate 2 (DL) of Formula Van-A + Indulin Low at 0.05 mV/s: 101.876817%
+Replicate 2 (DL) of Formula Van-A + Indulin Low at 0.10 mV/s: 99.813894%
+Replicate 2 (DL) of Formula Van-A + Indulin Low at 0.20 mV/s: 89.905945%
+Replicate 2 (DL) of Formula Van-A + Indulin Low at 0.50 mV/s: 69.487015%
+Replicate 3 (DL) of Formula Van-A + Indulin Low at 0.01 mV/s: 103.585314%
+Replicate 3 (DL) of Formula Van-A + Indulin Low at 0.02 mV/s: 100.144350%
+Replicate 3 (DL) of Formula Van-A + Indulin Low at 0.05 mV/s: 100.280689%
+Replicate 3 (DL) of Formula Van-A + Indulin Low at 0.10 mV/s: 98.474914%
+Replicate 3 (DL) of Formula Van-A + Indulin Low at 0.20 mV/s: 89.204730%
+Replicate 3 (DL) of Formula Van-A + Indulin Low at 0.50 mV/s: 70.650728%
+
+Replicate 1 (EH) of Formula S-Drill CL High at 0.01 mV/s: 103.936654%
+Replicate 1 (EH) of Formula S-Drill CL High at 0.02 mV/s: 102.517186%
+Replicate 1 (EH) of Formula S-Drill CL High at 0.05 mV/s: 102.311240%
+Replicate 1 (EH) of Formula S-Drill CL High at 0.10 mV/s: 99.977203%
+Replicate 1 (EH) of Formula S-Drill CL High at 0.20 mV/s: 90.450926%
+Replicate 1 (EH) of Formula S-Drill CL High at 0.50 mV/s: 68.821671%
+Replicate 2 (EH) of Formula S-Drill CL High at 0.01 mV/s: 134.038655%
+Replicate 2 (EH) of Formula S-Drill CL High at 0.02 mV/s: 102.331739%
+Replicate 2 (EH) of Formula S-Drill CL High at 0.05 mV/s: 102.244647%
+Replicate 2 (EH) of Formula S-Drill CL High at 0.10 mV/s: 96.888556%
+Replicate 2 (EH) of Formula S-Drill CL High at 0.20 mV/s: 83.772773%
+Replicate 2 (EH) of Formula S-Drill CL High at 0.50 mV/s: 62.859429%
+Replicate 3 (EH) of Formula S-Drill CL High at 0.01 mV/s: 118.755441%
+Replicate 3 (EH) of Formula S-Drill CL High at 0.02 mV/s: 100.854108%
+Replicate 3 (EH) of Formula S-Drill CL High at 0.05 mV/s: 101.490981%
+Replicate 3 (EH) of Formula S-Drill CL High at 0.10 mV/s: 96.655719%
+Replicate 3 (EH) of Formula S-Drill CL High at 0.20 mV/s: 85.342781%
+Replicate 3 (EH) of Formula S-Drill CL High at 0.50 mV/s: 62.935385%
+
+Replicate 1 (EL) of Formula S-Drill CL Low at 0.01 mV/s: 103.017444%
+Replicate 1 (EL) of Formula S-Drill CL Low at 0.02 mV/s: 103.064032%
+Replicate 1 (EL) of Formula S-Drill CL Low at 0.05 mV/s: 103.034545%
+Replicate 1 (EL) of Formula S-Drill CL Low at 0.10 mV/s: 99.638159%
+Replicate 1 (EL) of Formula S-Drill CL Low at 0.20 mV/s: 87.662191%
+Replicate 1 (EL) of Formula S-Drill CL Low at 0.50 mV/s: 68.128718%
+Replicate 2 (EL) of Formula S-Drill CL Low at 0.01 mV/s: 102.917058%
+Replicate 2 (EL) of Formula S-Drill CL Low at 0.02 mV/s: 101.498579%
+Replicate 2 (EL) of Formula S-Drill CL Low at 0.05 mV/s: 101.112576%
+Replicate 2 (EL) of Formula S-Drill CL Low at 0.10 mV/s: 99.976983%
+Replicate 2 (EL) of Formula S-Drill CL Low at 0.20 mV/s: 91.554725%
+Replicate 2 (EL) of Formula S-Drill CL Low at 0.50 mV/s: 71.829944%
+Replicate 3 (EL) of Formula S-Drill CL Low at 0.01 mV/s: 102.536738%
+Replicate 3 (EL) of Formula S-Drill CL Low at 0.02 mV/s: 100.662249%
+Replicate 3 (EL) of Formula S-Drill CL Low at 0.05 mV/s: 100.470698%
+Replicate 3 (EL) of Formula S-Drill CL Low at 0.10 mV/s: 99.504962%
+Replicate 3 (EL) of Formula S-Drill CL Low at 0.20 mV/s: 91.560024%
+Replicate 3 (EL) of Formula S-Drill CL Low at 0.50 mV/s: 71.127723%
+
+Replicate 1 (FH) of Formula Indulin AT High at 0.01 mV/s: 104.745073%
+Replicate 1 (FH) of Formula Indulin AT High at 0.02 mV/s: 102.630626%
+Replicate 1 (FH) of Formula Indulin AT High at 0.05 mV/s: 101.859375%
+Replicate 1 (FH) of Formula Indulin AT High at 0.10 mV/s: 94.130294%
+Replicate 1 (FH) of Formula Indulin AT High at 0.20 mV/s: 78.638543%
+Replicate 1 (FH) of Formula Indulin AT High at 0.50 mV/s: 54.403416%
+Replicate 2 (FH) of Formula Indulin AT High at 0.01 mV/s: 107.583176%
+Replicate 2 (FH) of Formula Indulin AT High at 0.02 mV/s: 100.410723%
+Replicate 2 (FH) of Formula Indulin AT High at 0.05 mV/s: 98.957653%
+Replicate 2 (FH) of Formula Indulin AT High at 0.10 mV/s: 93.659057%
+Replicate 2 (FH) of Formula Indulin AT High at 0.20 mV/s: 77.565084%
+Replicate 2 (FH) of Formula Indulin AT High at 0.50 mV/s: 50.981853%
+Replicate 3 (FH) of Formula Indulin AT High at 0.01 mV/s: 104.452855%
+Replicate 3 (FH) of Formula Indulin AT High at 0.02 mV/s: 98.706827%
+Replicate 3 (FH) of Formula Indulin AT High at 0.05 mV/s: 99.164926%
+Replicate 3 (FH) of Formula Indulin AT High at 0.10 mV/s: 94.580401%
+Replicate 3 (FH) of Formula Indulin AT High at 0.20 mV/s: 81.510774%
+Replicate 3 (FH) of Formula Indulin AT High at 0.50 mV/s: 57.508536%
+
+Replicate 1 (FL) of Formula Indulin AT Low at 0.01 mV/s: 102.574198%
+Replicate 1 (FL) of Formula Indulin AT Low at 0.02 mV/s: 102.134436%
+Replicate 1 (FL) of Formula Indulin AT Low at 0.05 mV/s: 101.864601%
+Replicate 1 (FL) of Formula Indulin AT Low at 0.10 mV/s: 100.283956%
+Replicate 1 (FL) of Formula Indulin AT Low at 0.20 mV/s: 91.475505%
+Replicate 1 (FL) of Formula Indulin AT Low at 0.50 mV/s: 72.790737%
+Replicate 2 (FL) of Formula Indulin AT Low at 0.01 mV/s: 102.496001%
+Replicate 2 (FL) of Formula Indulin AT Low at 0.02 mV/s: 99.136192%
+Replicate 2 (FL) of Formula Indulin AT Low at 0.05 mV/s: 99.391527%
+Replicate 2 (FL) of Formula Indulin AT Low at 0.10 mV/s: 97.826868%
+Replicate 2 (FL) of Formula Indulin AT Low at 0.20 mV/s: 89.002068%
+Replicate 2 (FL) of Formula Indulin AT Low at 0.50 mV/s: 70.287861%
+Replicate 3 (FL) of Formula Indulin AT Low at 0.01 mV/s: 102.342684%
+Replicate 3 (FL) of Formula Indulin AT Low at 0.02 mV/s: 99.912833%
+Replicate 3 (FL) of Formula Indulin AT Low at 0.05 mV/s: 100.420009%
+Replicate 3 (FL) of Formula Indulin AT Low at 0.10 mV/s: 98.624756%
+Replicate 3 (FL) of Formula Indulin AT Low at 0.20 mV/s: 88.625411%
+Replicate 3 (FL) of Formula Indulin AT Low at 0.50 mV/s: 68.791549%
+
+103.326291
+103.264360
+102.443895
+94.057368
+82.639838
+64.376661
+104.128561
+102.004226
+101.773275
+94.396802
+81.553097
+63.762919
+103.716966
+102.418057
+102.051430
+98.800874
+86.807075
+66.847369
+
+102.803670
+102.373153
+102.095660
+99.772173
+91.424285
+73.506498
+102.969166
+102.581324
+102.746426
+100.193689
+91.112469
+72.687485
+102.974772
+102.187882
+102.152062
+100.148534
+91.209963
+72.463999
+
+104.844873
+103.296543
+102.024685
+97.061825
+85.453323
+61.167037
+103.904733
+100.326717
+100.287775
+95.436128
+83.417590
+61.795034
+103.518252
+102.498608
+101.610201
+91.881816
+78.160713
+56.854985
+
+102.827048
+102.392249
+102.134079
+99.129974
+90.214418
+70.515691
+102.519719
+100.128313
+100.173085
+98.865284
+90.346017
+72.102031
+108.020943
+102.959564
+102.497799
+100.064062
+90.711673
+71.033197
+
+102.554516
+102.339779
+101.383841
+90.975653
+76.666275
+59.000590
+103.807999
+103.820948
+105.404388
+99.772153
+87.868061
+68.421735
+103.849946
+103.085468
+103.757491
+100.913863
+89.095227
+69.320484
+
+102.717883
+102.612627
+102.929203
+99.053941
+88.068464
+67.664209
+102.366408
+101.996425
+101.869174
+100.056770
+88.720450
+68.867580
+104.005029
+102.047799
+101.881495
+99.581362
+89.018600
+69.405990
+
+103.174606
+99.793079
+100.166454
+94.240301
+81.774603
+58.576581
+102.923000
+102.414790
+102.079908
+96.792007
+82.925424
+58.196724
+102.979745
+98.975285
+99.006553
+94.944314
+85.103063
+62.415923
+
+102.382301
+99.355849
+99.687853
+97.449312
+89.563032
+69.946255
+102.950918
+102.007848
+101.876817
+99.813894
+89.905945
+69.487015
+103.585314
+100.144350
+100.280689
+98.474914
+89.204730
+70.650728
+
+103.936654
+102.517186
+102.311240
+99.977203
+90.450926
+68.821671
+134.038655
+102.331739
+102.244647
+96.888556
+83.772773
+62.859429
+118.755441
+100.854108
+101.490981
+96.655719
+85.342781
+62.935385
+
+103.017444
+103.064032
+103.034545
+99.638159
+87.662191
+68.128718
+102.917058
+101.498579
+101.112576
+99.976983
+91.554725
+71.829944
+102.536738
+100.662249
+100.470698
+99.504962
+91.560024
+71.127723
+
+104.745073
+102.630626
+101.859375
+94.130294
+78.638543
+54.403416
+107.583176
+100.410723
+98.957653
+93.659057
+77.565084
+50.981853
+104.452855
+98.706827
+99.164926
+94.580401
+81.510774
+57.508536
+
+102.574198
+102.134436
+101.864601
+100.283956
+91.475505
+72.790737
+102.496001
+99.136192
+99.391527
+97.826868
+89.002068
+70.287861
+102.342684
+99.912833
+100.420009
+98.624756
+88.625411
+68.791549
+
+</pre><img vspace="5" hspace="5" src="Rate_Analysis_02.png" alt=""> <h2 id="9">Charge Efficiency at Final Scan Rate for Every Replicate</h2><pre class="codeoutput">
+Charge Efficiency at Final Scan Rate 
+Replicate 1 (AH) of Formula Van-HT High (Control) at 0.50 mV/s: 64.376661%
+Replicate 2 (AH) of Formula Van-HT High (Control) at 0.50 mV/s: 63.762919%
+Replicate 3 (AH) of Formula Van-HT High (Control) at 0.50 mV/s: 66.847369%
+
+Replicate 1 (AL) of Formula Van-HT Low at 0.50 mV/s: 73.506498%
+Replicate 2 (AL) of Formula Van-HT Low at 0.50 mV/s: 72.687485%
+Replicate 3 (AL) of Formula Van-HT Low at 0.50 mV/s: 72.463999%
+
+Replicate 1 (BH) of Formula Van-A High at 0.50 mV/s: 61.167037%
+Replicate 2 (BH) of Formula Van-A High at 0.50 mV/s: 61.795034%
+Replicate 3 (BH) of Formula Van-A High at 0.50 mV/s: 56.854985%
+
+Replicate 1 (BL) of Formula Van-A Low at 0.50 mV/s: 70.515691%
+Replicate 2 (BL) of Formula Van-A Low at 0.50 mV/s: 72.102031%
+Replicate 3 (BL) of Formula Van-A Low at 0.50 mV/s: 71.033197%
+
+Replicate 1 (CH) of Formula Van-DCA High at 0.50 mV/s: 59.000590%
+Replicate 2 (CH) of Formula Van-DCA High at 0.50 mV/s: 68.421735%
+Replicate 3 (CH) of Formula Van-DCA High at 0.50 mV/s: 69.320484%
+
+Replicate 1 (CL) of Formula Van-DCA Low at 0.50 mV/s: 67.664209%
+Replicate 2 (CL) of Formula Van-DCA Low at 0.50 mV/s: 68.867580%
+Replicate 3 (CL) of Formula Van-DCA Low at 0.50 mV/s: 69.405990%
+
+Replicate 1 (DH) of Formula Van-A + Indulin High at 0.50 mV/s: 58.576581%
+Replicate 2 (DH) of Formula Van-A + Indulin High at 0.50 mV/s: 58.196724%
+Replicate 3 (DH) of Formula Van-A + Indulin High at 0.50 mV/s: 62.415923%
+
+Replicate 1 (DL) of Formula Van-A + Indulin Low at 0.50 mV/s: 69.946255%
+Replicate 2 (DL) of Formula Van-A + Indulin Low at 0.50 mV/s: 69.487015%
+Replicate 3 (DL) of Formula Van-A + Indulin Low at 0.50 mV/s: 70.650728%
+
+Replicate 1 (EH) of Formula S-Drill CL High at 0.50 mV/s: 68.821671%
+Replicate 2 (EH) of Formula S-Drill CL High at 0.50 mV/s: 62.859429%
+Replicate 3 (EH) of Formula S-Drill CL High at 0.50 mV/s: 62.935385%
+
+Replicate 1 (EL) of Formula S-Drill CL Low at 0.50 mV/s: 68.128718%
+Replicate 2 (EL) of Formula S-Drill CL Low at 0.50 mV/s: 71.829944%
+Replicate 3 (EL) of Formula S-Drill CL Low at 0.50 mV/s: 71.127723%
+
+Replicate 1 (FH) of Formula Indulin AT High at 0.50 mV/s: 54.403416%
+Replicate 2 (FH) of Formula Indulin AT High at 0.50 mV/s: 50.981853%
+Replicate 3 (FH) of Formula Indulin AT High at 0.50 mV/s: 57.508536%
+
+Replicate 1 (FL) of Formula Indulin AT Low at 0.50 mV/s: 72.790737%
+Replicate 2 (FL) of Formula Indulin AT Low at 0.50 mV/s: 70.287861%
+Replicate 3 (FL) of Formula Indulin AT Low at 0.50 mV/s: 68.791549%
+
+64.38
+63.76
+66.85
+
+73.51
+72.69
+72.46
+
+61.17
+61.80
+56.85
+
+70.52
+72.10
+71.03
+
+59.00
+68.42
+69.32
+
+67.66
+68.87
+69.41
+
+58.58
+58.20
+62.42
+
+69.95
+69.49
+70.65
+
+68.82
+62.86
+62.94
+
+68.13
+71.83
+71.13
+
+54.40
+50.98
+57.51
+
+72.79
+70.29
+68.79
+
+</pre><h2 id="10">Normalized Charge Efficiency</h2><p>This section of the code will normalize the efficiency.</p><h2 id="11">Average Normalized Charge Efficiency at the Highest Scan Rate</h2><pre class="codeoutput">
+Normalized Charge Efficiency at Every Scan Rate
+</pre><h2 id="14">Normalized Discharge Rate</h2><p>Store the scan rate values</p><img vspace="5" hspace="5" src="Rate_Analysis_03.png" alt=""> <h2 id="15">Final Discharge Rates for Every Replicate</h2><pre class="codeoutput">
+Final Discharge Rates for Every Replicate 
+Replicate 1 (AH16) of Formula Van-HT High (Control) at 0.5 mV/s: 4.856179
+Replicate 2 (AH21) of Formula Van-HT High (Control) at 0.5 mV/s: 4.773968
+Replicate 3 (AH07) of Formula Van-HT High (Control) at 0.5 mV/s: 5.883637
+
+Replicate 1 (AL13) of Formula Van-HT Low at 0.5 mV/s: 5.167668
+Replicate 2 (AL07) of Formula Van-HT Low at 0.5 mV/s: 5.112220
+Replicate 3 (AL14) of Formula Van-HT Low at 0.5 mV/s: 5.168003
+
+Replicate 1 (BH09) of Formula Van-A High at 0.5 mV/s: 4.507695
+Replicate 2 (BH16) of Formula Van-A High at 0.5 mV/s: 4.549133
+Replicate 3 (BH08) of Formula Van-A High at 0.5 mV/s: 4.182097
+
+Replicate 1 (BL15) of Formula Van-A Low at 0.5 mV/s: 4.896513
+Replicate 2 (BL04) of Formula Van-A Low at 0.5 mV/s: 4.744773
+Replicate 3 (BL02) of Formula Van-A Low at 0.5 mV/s: 4.788046
+
+Replicate 1 (CH10) of Formula Van-DCA High at 0.5 mV/s: 4.648462
+Replicate 2 (CH24) of Formula Van-DCA High at 0.5 mV/s: 4.718340
+Replicate 3 (CH22) of Formula Van-DCA High at 0.5 mV/s: 5.488985
+
+Replicate 1 (CL06) of Formula Van-DCA Low at 0.5 mV/s: 5.255575
+Replicate 2 (CL02) of Formula Van-DCA Low at 0.5 mV/s: 5.131356
+Replicate 3 (CL03) of Formula Van-DCA Low at 0.5 mV/s: 5.086451
+
+Replicate 1 (DH03) of Formula Van-A + Indulin High at 0.5 mV/s: 4.493230
+Replicate 2 (DH21) of Formula Van-A + Indulin High at 0.5 mV/s: 4.498083
+Replicate 3 (DH13) of Formula Van-A + Indulin High at 0.5 mV/s: 4.808951
+
+Replicate 1 (DL18) of Formula Van-A + Indulin Low at 0.5 mV/s: 5.378516
+Replicate 2 (DL03) of Formula Van-A + Indulin Low at 0.5 mV/s: 5.484813
+Replicate 3 (DL02) of Formula Van-A + Indulin Low at 0.5 mV/s: 5.300941
+
+Replicate 1 (EH23) of Formula S-Drill CL High at 0.5 mV/s: 5.463314
+Replicate 2 (EH03) of Formula S-Drill CL High at 0.5 mV/s: 4.757839
+Replicate 3 (EH20) of Formula S-Drill CL High at 0.5 mV/s: 4.804429
+
+Replicate 1 (EL22) of Formula S-Drill CL Low at 0.5 mV/s: 5.094718
+Replicate 2 (EL23) of Formula S-Drill CL Low at 0.5 mV/s: 5.295151
+Replicate 3 (EL08) of Formula S-Drill CL Low at 0.5 mV/s: 5.264237
+
+Replicate 1 (FH20) of Formula Indulin AT High at 0.5 mV/s: 4.259776
+Replicate 2 (FH07) of Formula Indulin AT High at 0.5 mV/s: 3.762435
+Replicate 3 (FH16) of Formula Indulin AT High at 0.5 mV/s: 4.545359
+
+Replicate 1 (FL01) of Formula Indulin AT Low at 0.5 mV/s: 5.394036
+Replicate 2 (FL25) of Formula Indulin AT Low at 0.5 mV/s: 5.081743
+Replicate 3 (FL03) of Formula Indulin AT Low at 0.5 mV/s: 4.891105
+
+4.856179 
+4.773968 
+5.883637 
+5.167668 
+5.112220 
+5.168003 
+4.507695 
+4.549133 
+4.182097 
+4.896513 
+4.744773 
+4.788046 
+4.648462 
+4.718340 
+5.488985 
+5.255575 
+5.131356 
+5.086451 
+4.493230 
+4.498083 
+4.808951 
+5.378516 
+5.484813 
+5.300941 
+5.463314 
+4.757839 
+4.804429 
+5.094718 
+5.295151 
+5.264237 
+4.259776 
+3.762435 
+4.545359 
+5.394036 
+5.081743 
+4.891105 
+
+</pre><h2 id="16">Average Normalized Discharge Rate at Square Root of Every Scan Rate</h2><pre class="codeoutput">Formula Van-HT High (Control) at square root of scan rate 0.010000 (0.1000): 0.773347 
+Formula Van-HT High (Control) at square root of scan rate 0.020000 (0.1414): 1.106055 
+Formula Van-HT High (Control) at square root of scan rate 0.050000 (0.2236): 1.710092 
+Formula Van-HT High (Control) at square root of scan rate 0.100000 (0.3162): 2.433740 
+Formula Van-HT High (Control) at square root of scan rate 0.200000 (0.4472): 3.407241 
+Formula Van-HT High (Control) at square root of scan rate 0.500000 (0.7071): 5.171261 
+
+Formula Van-HT Low at square root of scan rate 0.010000 (0.1000): 0.822491 
+Formula Van-HT Low at square root of scan rate 0.020000 (0.1414): 1.162194 
+Formula Van-HT Low at square root of scan rate 0.050000 (0.2236): 1.767174 
+Formula Van-HT Low at square root of scan rate 0.100000 (0.3162): 2.490088 
+Formula Van-HT Low at square root of scan rate 0.200000 (0.4472): 3.396639 
+Formula Van-HT Low at square root of scan rate 0.500000 (0.7071): 5.149297 
+
+Formula Van-A High at square root of scan rate 0.010000 (0.1000): 0.678549 
+Formula Van-A High at square root of scan rate 0.020000 (0.1414): 0.879273 
+Formula Van-A High at square root of scan rate 0.050000 (0.2236): 1.433120 
+Formula Van-A High at square root of scan rate 0.100000 (0.3162): 2.062319 
+Formula Van-A High at square root of scan rate 0.200000 (0.4472): 2.900247 
+Formula Van-A High at square root of scan rate 0.500000 (0.7071): 4.412975 
+
+Formula Van-A Low at square root of scan rate 0.010000 (0.1000): 0.769507 
+Formula Van-A Low at square root of scan rate 0.020000 (0.1414): 1.085255 
+Formula Van-A Low at square root of scan rate 0.050000 (0.2236): 1.655922 
+Formula Van-A Low at square root of scan rate 0.100000 (0.3162): 2.329184 
+Formula Van-A Low at square root of scan rate 0.200000 (0.4472): 3.197984 
+Formula Van-A Low at square root of scan rate 0.500000 (0.7071): 4.809777 
+
+Formula Van-DCA High at square root of scan rate 0.010000 (0.1000): 0.758412 
+Formula Van-DCA High at square root of scan rate 0.020000 (0.1414): 1.079501 
+Formula Van-DCA High at square root of scan rate 0.050000 (0.2236): 1.665123 
+Formula Van-DCA High at square root of scan rate 0.100000 (0.3162): 2.365772 
+Formula Van-DCA High at square root of scan rate 0.200000 (0.4472): 3.270505 
+Formula Van-DCA High at square root of scan rate 0.500000 (0.7071): 4.951929 
+
+Formula Van-DCA Low at square root of scan rate 0.010000 (0.1000): 0.807996 
+Formula Van-DCA Low at square root of scan rate 0.020000 (0.1414): 1.127005 
+Formula Van-DCA Low at square root of scan rate 0.050000 (0.2236): 1.725273 
+Formula Van-DCA Low at square root of scan rate 0.100000 (0.3162): 2.456994 
+Formula Van-DCA Low at square root of scan rate 0.200000 (0.4472): 3.413482 
+Formula Van-DCA Low at square root of scan rate 0.500000 (0.7071): 5.157794 
+
+Formula Van-A + Indulin High at square root of scan rate 0.010000 (0.1000): 0.713231 
+Formula Van-A + Indulin High at square root of scan rate 0.020000 (0.1414): 0.973224 
+Formula Van-A + Indulin High at square root of scan rate 0.050000 (0.2236): 1.514560 
+Formula Van-A + Indulin High at square root of scan rate 0.100000 (0.3162): 2.158667 
+Formula Van-A + Indulin High at square root of scan rate 0.200000 (0.4472): 3.018125 
+Formula Van-A + Indulin High at square root of scan rate 0.500000 (0.7071): 4.600088 
+
+Formula Van-A + Indulin Low at square root of scan rate 0.010000 (0.1000): 0.804036 
+Formula Van-A + Indulin Low at square root of scan rate 0.020000 (0.1414): 1.148491 
+Formula Van-A + Indulin Low at square root of scan rate 0.050000 (0.2236): 1.775415 
+Formula Van-A + Indulin Low at square root of scan rate 0.100000 (0.3162): 2.557512 
+Formula Van-A + Indulin Low at square root of scan rate 0.200000 (0.4472): 3.536112 
+Formula Van-A + Indulin Low at square root of scan rate 0.500000 (0.7071): 5.388090 
+
+Formula S-Drill CL High at square root of scan rate 0.010000 (0.1000): 0.773926 
+Formula S-Drill CL High at square root of scan rate 0.020000 (0.1414): 1.057265 
+Formula S-Drill CL High at square root of scan rate 0.050000 (0.2236): 1.644488 
+Formula S-Drill CL High at square root of scan rate 0.100000 (0.3162): 2.336441 
+Formula S-Drill CL High at square root of scan rate 0.200000 (0.4472): 3.268376 
+Formula S-Drill CL High at square root of scan rate 0.500000 (0.7071): 5.008527 
+
+Formula S-Drill CL Low at square root of scan rate 0.010000 (0.1000): 0.810667 
+Formula S-Drill CL Low at square root of scan rate 0.020000 (0.1414): 1.147182 
+Formula S-Drill CL Low at square root of scan rate 0.050000 (0.2236): 1.754689 
+Formula S-Drill CL Low at square root of scan rate 0.100000 (0.3162): 2.477293 
+Formula S-Drill CL Low at square root of scan rate 0.200000 (0.4472): 3.421753 
+Formula S-Drill CL Low at square root of scan rate 0.500000 (0.7071): 5.218035 
+
+Formula Indulin AT High at square root of scan rate 0.010000 (0.1000): 0.710966 
+Formula Indulin AT High at square root of scan rate 0.020000 (0.1414): 0.878763 
+Formula Indulin AT High at square root of scan rate 0.050000 (0.2236): 1.362628 
+Formula Indulin AT High at square root of scan rate 0.100000 (0.3162): 1.924862 
+Formula Indulin AT High at square root of scan rate 0.200000 (0.4472): 2.687963 
+Formula Indulin AT High at square root of scan rate 0.500000 (0.7071): 4.189190 
+
+Formula Indulin AT Low at square root of scan rate 0.010000 (0.1000): 0.821474 
+Formula Indulin AT Low at square root of scan rate 0.020000 (0.1414): 1.152766 
+Formula Indulin AT Low at square root of scan rate 0.050000 (0.2236): 1.751456 
+Formula Indulin AT Low at square root of scan rate 0.100000 (0.3162): 2.442195 
+Formula Indulin AT Low at square root of scan rate 0.200000 (0.4472): 3.375134 
+Formula Indulin AT Low at square root of scan rate 0.500000 (0.7071): 5.122295 
+
+</pre><h2 id="17">Final Discharge Rates (average)</h2><pre class="codeoutput">Discharge rate at 0.5 mV/s of formula Van-HT High (Control): 5.171261 
+Discharge rate at 0.5 mV/s of formula Van-HT Low: 5.149297 
+Discharge rate at 0.5 mV/s of formula Van-A High: 4.412975 
+Discharge rate at 0.5 mV/s of formula Van-A Low: 4.809777 
+Discharge rate at 0.5 mV/s of formula Van-DCA High: 4.951929 
+Discharge rate at 0.5 mV/s of formula Van-DCA Low: 5.157794 
+Discharge rate at 0.5 mV/s of formula Van-A + Indulin High: 4.600088 
+Discharge rate at 0.5 mV/s of formula Van-A + Indulin Low: 5.388090 
+Discharge rate at 0.5 mV/s of formula S-Drill CL High: 5.008527 
+Discharge rate at 0.5 mV/s of formula S-Drill CL Low: 5.218035 
+Discharge rate at 0.5 mV/s of formula Indulin AT High: 4.189190 
+Discharge rate at 0.5 mV/s of formula Indulin AT Low: 5.122295 
+5.171261 
+5.149297 
+4.412975 
+4.809777 
+4.951929 
+5.157794 
+4.600088 
+5.388090 
+5.008527 
+5.218035 
+4.189190 
+5.122295 
+</pre><h2 id="18">Polarization Analysis</h2><p>Substract the two peaks (MB_03 - MB_04) for every rep of every formula</p><img vspace="5" hspace="5" src="Rate_Analysis_04.png" alt=""> <h2 id="19">Polarization Values at Scan Rate 0.1 mV/s for Every Replicate</h2><pre class="codeoutput">
+Polarization Values at Scan Rate 0.1 mV/s for Every Replicate
+Replicate 1 (AH16) of Formula Van-HT High (Control) at 0.1 mV/s: 0.209288 
+Replicate 2 (AH21) of Formula Van-HT High (Control) at 0.1 mV/s: 0.215714 
+Replicate 3 (AH07) of Formula Van-HT High (Control) at 0.1 mV/s: 0.176959 
+
+Replicate 1 (AL13) of Formula Van-HT Low at 0.1 mV/s: 0.175730 
+Replicate 2 (AL07) of Formula Van-HT Low at 0.1 mV/s: 0.177528 
+Replicate 3 (AL14) of Formula Van-HT Low at 0.1 mV/s: 0.182923 
+
+Replicate 1 (BH09) of Formula Van-A High at 0.1 mV/s: 0.224859 
+Replicate 2 (BH16) of Formula Van-A High at 0.1 mV/s: 0.239875 
+Replicate 3 (BH08) of Formula Van-A High at 0.1 mV/s: 0.240178 
+
+Replicate 1 (BL15) of Formula Van-A Low at 0.1 mV/s: 0.190341 
+Replicate 2 (BL04) of Formula Van-A Low at 0.1 mV/s: 0.186063 
+Replicate 3 (BL02) of Formula Van-A Low at 0.1 mV/s: 0.191066 
+
+Replicate 1 (CH10) of Formula Van-DCA High at 0.1 mV/s: 0.225179 
+Replicate 2 (CH24) of Formula Van-DCA High at 0.1 mV/s: 0.198161 
+Replicate 3 (CH22) of Formula Van-DCA High at 0.1 mV/s: 0.181688 
+
+Replicate 1 (CL06) of Formula Van-DCA Low at 0.1 mV/s: 0.181019 
+Replicate 2 (CL02) of Formula Van-DCA Low at 0.1 mV/s: 0.184411 
+Replicate 3 (CL03) of Formula Van-DCA Low at 0.1 mV/s: 0.185961 
+
+Replicate 1 (DH03) of Formula Van-A + Indulin High at 0.1 mV/s: 0.263955 
+Replicate 2 (DH21) of Formula Van-A + Indulin High at 0.1 mV/s: 0.254296 
+Replicate 3 (DH13) of Formula Van-A + Indulin High at 0.1 mV/s: 0.230773 
+
+Replicate 1 (DL18) of Formula Van-A + Indulin Low at 0.1 mV/s: 0.197782 
+Replicate 2 (DL03) of Formula Van-A + Indulin Low at 0.1 mV/s: 0.187345 
+Replicate 3 (DL02) of Formula Van-A + Indulin Low at 0.1 mV/s: 0.184021 
+
+Replicate 1 (EH23) of Formula S-Drill CL High at 0.1 mV/s: 0.180527 
+Replicate 2 (EH03) of Formula S-Drill CL High at 0.1 mV/s: 0.196935 
+Replicate 3 (EH20) of Formula S-Drill CL High at 0.1 mV/s: 0.199607 
+
+Replicate 1 (EL22) of Formula S-Drill CL Low at 0.1 mV/s: 0.187788 
+Replicate 2 (EL23) of Formula S-Drill CL Low at 0.1 mV/s: 0.179512 
+Replicate 3 (EL08) of Formula S-Drill CL Low at 0.1 mV/s: 0.180733 
+
+Replicate 1 (FH20) of Formula Indulin AT High at 0.1 mV/s: 0.251663 
+Replicate 2 (FH07) of Formula Indulin AT High at 0.1 mV/s: 0.290306 
+Replicate 3 (FH16) of Formula Indulin AT High at 0.1 mV/s: 0.255445 
+
+Replicate 1 (FL01) of Formula Indulin AT Low at 0.1 mV/s: 0.181964 
+Replicate 2 (FL25) of Formula Indulin AT Low at 0.1 mV/s: 0.182188 
+Replicate 3 (FL03) of Formula Indulin AT Low at 0.1 mV/s: 0.184670 
+
+0.209288 
+0.215714 
+0.176959 
+0.175730 
+0.177528 
+0.182923 
+0.224859 
+0.239875 
+0.240178 
+0.190341 
+0.186063 
+0.191066 
+0.225179 
+0.198161 
+0.181688 
+0.181019 
+0.184411 
+0.185961 
+0.263955 
+0.254296 
+0.230773 
+0.197782 
+0.187345 
+0.184021 
+0.180527 
+0.196935 
+0.199607 
+0.187788 
+0.179512 
+0.180733 
+0.251663 
+0.290306 
+0.255445 
+0.181964 
+0.182188 
+0.184670 
+</pre><h2 id="20">Polarization values at scan rate 0.1 mV/s (average)</h2><pre class="codeoutput">
+Polarization of formula               Van-HT High (Control) at scan rate 0.1: 0.200653 
+Polarization of formula                          Van-HT Low at scan rate 0.1: 0.178727 
+Polarization of formula                          Van-A High at scan rate 0.1: 0.234971 
+Polarization of formula                           Van-A Low at scan rate 0.1: 0.189157 
+Polarization of formula                        Van-DCA High at scan rate 0.1: 0.201676 
+Polarization of formula                         Van-DCA Low at scan rate 0.1: 0.183797 
+Polarization of formula                Van-A + Indulin High at scan rate 0.1: 0.249675 
+Polarization of formula                 Van-A + Indulin Low at scan rate 0.1: 0.189716 
+Polarization of formula                     S-Drill CL High at scan rate 0.1: 0.192357 
+Polarization of formula                      S-Drill CL Low at scan rate 0.1: 0.182678 
+Polarization of formula                     Indulin AT High at scan rate 0.1: 0.265805 
+Polarization of formula                      Indulin AT Low at scan rate 0.1: 0.182941 
+0.200653 
+0.178727 
+0.234971 
+0.189157 
+0.201676 
+0.183797 
+0.249675 
+0.189716 
+0.192357 
+0.182678 
+0.265805 
+0.182941 
+</pre><h2 id="23">Overlay Charge Plots</h2><p>Initialize xVar, yVar, bCharMass</p><pre class="codeoutput">Warning: Ignoring extra legend entries. 
+Warning: Ignoring extra legend entries. 
+Warning: Ignoring extra legend entries. 
+Warning: Ignoring extra legend entries. 
+Warning: Ignoring extra legend entries. 
+Warning: Ignoring extra legend entries. 
+Warning: Ignoring extra legend entries. 
+Warning: Ignoring extra legend entries. 
+Warning: Ignoring extra legend entries. 
+Warning: Ignoring extra legend entries. 
+Warning: Ignoring extra legend entries. 
+Warning: Ignoring extra legend entries. 
+</pre><img vspace="5" hspace="5" src="Rate_Analysis_05.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_06.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_07.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_08.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_09.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_10.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_11.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_12.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_13.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_14.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_15.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_16.png" alt=""> <h2 id="26">2. CA</h2><p>Define x and y variables</p><img vspace="5" hspace="5" src="Rate_Analysis_17.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_18.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_19.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_20.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_21.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_22.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_23.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_24.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_25.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_26.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_27.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_28.png" alt=""> <h2 id="29">OCV Plots</h2><p>Run general replicate</p><img vspace="5" hspace="5" src="Rate_Analysis_29.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_30.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_31.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_32.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_33.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_34.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_35.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_36.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_37.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_38.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_39.png" alt=""> <img vspace="5" hspace="5" src="Rate_Analysis_40.png" alt=""> <h2 id="30">OCV Average Plot</h2><p>Plot averages</p><img vspace="5" hspace="5" src="Rate_Analysis_41.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Rate Detailed Summary
+% This document contains the Carbon-Lignen Phase 2 summary graphs and data
+% analysis. 
+function[] = Rate_Analysis()
+% This serves as the main function will run both the plotting and data
+% analysis functions for all steps run on the VMP-3e. 
+
+% Assumptions 
+%   HARDCODED :
+%       nSteps      The number of steps in the program is hardcoded as 12
+
+    % Local variables
+    %   nNumOfReplicates    The number of replicates input by the user
+    %   currentFileLocation The fullpath of this file
+    %   pathstr             The fileparts of the currentFileLocation
+    %                           excluding the file name
+    %   dataFolder          The "Data" file path appended to the end of the
+    %                           data folder
+    %   replicateNames      The names of the replicate folders 
+    %   replicateList       The files located inside the Data folder
+    %   sDataType           String; The type of data analysis we will
+    %                           perform
+
+    % Intiailize the plot titles array VERY IMPORTANT
+    asPlotTitles = []; 
+
+    % Initialize Data file
+    sDataFile = "RateData"; 
+
+    % Prompt user for necessary data
+    sDataType = "ALL123"; 
+
+    % Get the number of replicates from the user
+%     nNumOfReplicates = getNumberOfReplicatesFromUser(); 
+
+    % Get the path of the current file
+    currentFileLocation = mfilename("fullpath");
+
+    % Get file parts of the current file
+    [pathstr, ~, ~] = fileparts( currentFileLocation );
+    
+    % Append the data folder location to the end of the pathstr
+    dataFolder = fullfile(pathstr, sDataFile); 
+
+    % Look at all the replicate folders
+    replicateList = dir(fullfile(dataFolder, "*")); 
+    replicateNames = {replicateList.name}.'; 
+    replicateNames = replicateNames(3:end); % we go from 3:end bc it always includes '.' & '..' at the beginning
+
+    % Get the number of replicates
+    nNumOfReplicates = length(replicateNames); 
+%     nNumOfReplicates = 2; 
+
+    % Switch to the correct procedure
+    switch sDataType
+        case "LSV"
+            runLSVProcedure(dataFolder, nNumOfReplicates, replicateNames);
+        case "OCV"
+            runOCVProcedure(dataFolder, nNumOfReplicates, replicateNames); 
+        case "MB"
+            runMBProcedure(dataFolder, nNumOfReplicates, replicateNames); 
+        case "PEIS"
+            runPEISProcedure(dataFolder, nNumOfReplicates, replicateNames);
+        case "CA"
+            runCAProcedure(dataFolder, nNumOfReplicates, replicateNames); 
+        case "GCPL"
+            runGCPLProcedure(dataFolder, nNumOfReplicates, replicateNames); 
+        case "ALL123"
+            asPlotTitles = runMBProcedure(dataFolder, nNumOfReplicates, replicateNames, asPlotTitles); 
+            asPlotTitles = runCAProcedure(dataFolder, nNumOfReplicates, replicateNames, asPlotTitles);
+            asPlotTitles = runOCVProcedure(dataFolder, nNumOfReplicates, replicateNames, asPlotTitles); 
+        otherwise
+            fprintf(">:( wut r u doing try again\n");
+    end
+
+end
+
+% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+function[ sDataType ] = getDataType()
+% This function gets the data type we are looking at. For example, LSV,
+% AC, etc
+% Input
+% 
+% Output
+%   sDataType       The type of data analsis we will be doing
+
+    % Local Variable 
+    % 
+
+    % Prompt the user for the number of files there 
+    sDataType = input("Please input what kind of analysis we will be performing: ", "s"); 
+end
+
+function[ nNumOfReplicates ] = getNumberOfReplicatesFromUser()
+% This function will ask the user for the number of replicates - i.e., the
+% number of files they will be giving us. 
+
+% Input
+% 
+% Output
+%   nNumOfReplicates        This variable tracks the number of replicates
+%                               that the user will be plotting
+
+    % Local Variables
+    %   prompt          The prompt for the question
+
+    % Write prompt 
+    prompt = "Enter the number of replicates you will be inputting: ";
+
+    % Ask user for input
+    nNumOfReplicates = input(prompt); 
+end
+
+function[ xVar, yVar ] = getVariables(asOptions)
+% getVariables will ask the user for 2 variables they want to see plotted. 
+% Input
+%   asOptions       Strucutre; the options available for picking
+% Output
+% xVar      The x variable
+% yVar      The y variable
+
+    % Local Variables
+    %
+    
+    % Explain to the user what is happening
+    fprintf("Your options for variables are: \n")
+%     fprintf("'mode', 'ox/red', 'error', 'control changes', 'time/s', 'control/V', 'Ewe/V', 'I/mA/g', '(Q-Qo)/c', 'I range', 'P/W'\n")
+    disp(asOptions);
+    fprintf("Note that the variable names are case sensitive. \n")
+
+    % Prompt the user for the variables
+    xVar = input("Please enter the x-variable: ", "s");
+    yVar = input("Please enter the y-variable: ", "s");
+end
+
+function[ fCharMass ] = getCharacteristicMass(fullTxtFileDirectory)
+% This function will look through the text file and find the line that
+% contains the line "Characteristic mass." It then extracts the mass
+% recorded by the software. 
+% Input
+%   fullExcelFileDirectory  String; the complete path to the file
+% Output 
+%   fCharMass               The characteristic mass stored within the file
+
+    % Local Variables
+    %   lines           The lines of the passed text file
+    %   bFound          Boolean variable which indicates whether we have
+    %                       found the line that contains the phrase
+    %                       "Characteristic mass"
+    %   sCharMass       String variable that contains the characteristic
+    %                       mass
+    %   fCharMass       Float that contains the characteristic mass
+
+    % Read in the file line-by-line
+    % Getting the characteristic mass 
+    lines = readlines(fullTxtFileDirectory); 
+    
+    % Look through every line for the phrase "characteristic mass"
+    bFound = 0; 
+    iLine = 1; 
+    while iLine < length(lines) && ~bFound
+        if contains(lines(iLine), "Characteristic mass :")
+            % Set characteristic mass to found
+            bFound = 1; 
+            
+            % Access the line and split at the :  
+            sCharMass = strsplit(lines(iLine), ' : '); 
+            sCharMass = sCharMass(2); 
+
+            % Split after the space
+            sCharMass = strsplit(sCharMass, ' '); 
+
+            % Turn that into a number
+            fCharMass = str2double(sCharMass(1)); 
+        end
+        % Iterate the iLine variable
+        iLine = iLine + 1; 
+    end
+
+end
+
+function[ nFigNum, asPlotTitles ] = checkAvailability(asPlotTitles, sNewPlotTitle)
+% The checkAvailability function will take in an array of strings which are
+% all of the plot titles and a potentially new plot title. It will check if
+% that new plot title already exists within the array. If it does, then
+% bAvailable is false. 
+% Input
+%   asPlotTitles        Array of strings; Plot titles
+%   sNewPlotTitle       String; The "new plot" title that we will check
+% Output
+%   bAvailable      Boolean value; 1 if plot title is not in array, 0
+%                       otherwise
+%   nFigNum         The appropriate figure number
+
+    % Local Variables
+    %   iTitle          Iterator; the index of the plot title (only used if
+    %                       plot title has been used before)
+    %   currentTitle    string; the current title being compared against
+    %                       sNewPlotTitle
+
+    % Initialize bAvailable to "new plot"
+    bAvailable = 1;  
+
+    % Convert sNewPlotTitles to a string
+    sNewPlotTitle = string(sNewPlotTitle); 
+
+    % First check if asPlotTitles is empty
+    if isempty(asPlotTitles)
+        nFigNum = 1; 
+        asPlotTitles = [sNewPlotTitle]; 
+    else
+        % If it is not empty, check to see if sNewPlotTitle exists already
+        % If sNewPlotTitle does not contain the new plot title, add it
+        if ~any(strcmp(asPlotTitles, sNewPlotTitle))
+            % Add the new plot title
+            asPlotTitles = [asPlotTitles sNewPlotTitle];
+            nFigNum = length(asPlotTitles); 
+        % If sNewPlotTitle DOES contain the plot title, find its index
+        else
+            % Find the index of sNewPlotTitle
+            iTitle = 1; 
+            while iTitle <= length(asPlotTitles) && bAvailable
+                currentTitle = asPlotTitles(iTitle); 
+                if currentTitle == sNewPlotTitle
+                    bAvailable = 0; 
+                    nFigNum = iTitle; 
+                end
+                iTitle = iTitle + 1; 
+            end
+        end
+    end
+end
+
+function[sTitle] = getFormulaName(sFilePrefix)
+% This function will take in a file prefix and return the title of the
+% graph which should be its corresponding formula. 
+% Input
+%   sFilePrefix     String; the file prefix
+% Output
+%   sTitle          string; the title of the graph (formula name)
+
+    % Local Variable
+    %   
+
+    % Get the title name based on the sFilePrefix
+    switch sFilePrefix
+        case "AD"
+            sTitle = 'Control-4'; 
+        case "BC"
+            sTitle = 'ABG1010 : PBX-51 (1:2)'; 
+        case "CC"
+            sTitle = 'ABG1010 : PBX-51 (1:1)'; 
+        case "DC"
+            sTitle = 'ABG1010 : PBX-51 : BD (2:4:1)'; 
+        case "EC"
+            sTitle = 'ABG1010 : MX15-P50 (1:1)'; 
+        case "JL"
+            sTitle = 'MX15-P50 Low'; 
+        case "FC"
+            sTitle = 'Kappa 240 : PBX-51 (1:1)'; 
+        case "GC"
+            sTitle = 'Kappa 240 : MX15-P50 (1:1)';
+        case "MO"
+            sTitle = "0.25% Ace-Sil"; 
+        case "MT"
+            sTitle = "0.50% Ace-Sil"; 
+        case "AH"
+            sTitle = "Van-HT High (Control)"; 
+        case "AL"
+            sTitle = "Van-HT Low"; 
+        case "BH"
+            sTitle = "Van-A High"; 
+        case "BL"
+            sTitle = "Van-A Low"; 
+        case "CH"
+            sTitle = "Van-DCA High";
+        case "CL"
+            sTitle = "Van-DCA Low"; 
+        case "DH"
+            sTitle = "Van-A + Indulin High"; 
+        case "DL"
+            sTitle = "Van-A + Indulin Low";
+        case "EH"
+            sTitle = "S-Drill CL High";
+        case "EL"
+            sTitle = "S-Drill CL Low"; 
+        case "FH"
+            sTitle = "Indulin AT High"; 
+        case "FL"
+            sTitle = "Indulin AT Low";
+        otherwise
+            sTitle = 'Naming convention error'; 
+    end
+end
+
+function[asPlotTitles] = runGeneralReplicatePlot(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, sXLabel, sYLabel, nStepNumber, asPlotTitles)
+% This function will run the general replicate algorithm. This is mean to
+% not only decrease the lines of code, but improve efficiency. 
+% Input
+%   sDataType           String; the data we are looking at
+%   dataFolder          The "Data" file path appended to the end of the
+%                           data folder
+%   nNumOfReplicates    The number of replicates 
+%   replicateNames      The names of the replicate folders 
+%   VariableNames       structure; the variable names for the data
+%   xVar                The x variable of interest
+%   yVar                The y variable of interest
+%   sXLabel             String; the x label
+%   sYLabel             String; the y label
+%   nStepNumber         String; the step number we are on
+%   asPlotTitles        string array; All the plot titles (constantly
+%                           updated)
+% Output
+%   asPlotTitles        string array; all the plot titles (constantly
+%                           updated)
+
+    % Local variables
+    %   replicateDirectory  String; Path of replicate iReplicate in the
+    %                           data folder
+    %   textData            Directory of all text files inside Replicate#
+    %   textNames           The names of the excel files inside the
+    %                           replicate
+    %   nNumOfTxtFiles      The number of text files in the replicate
+    %                           folder
+    %   currentTextFilePath String; stores the path of the current txt file
+    %   sFilePrefix         string; the first 2 letters of the file name
+    %                           which provide info about the carbon
+    %   sCupID              string; Current cup ID
+    %   nCurrentStepNumber  Int; the step number in integer form
+    %   sGraphTitle         String; The graph title 
+    % fullTextFileDirectory String; The full text file path
+    %   nFigNum             The figure number where the data will be
+    %                           plotted
+    %   rawTable            The data read in from the tab-delimitted text
+    %                          file
+    %   x                   The x-variable data
+    %   y                   The y-variable data
+    %   fCharMass           float; characteristic mass (not always included)
+
+    % Loop through every replicate number folder in the data folder
+    iReplicate = 1; 
+    while iReplicate <= nNumOfReplicates
+        % Obtain the replicate directory
+        replicateDirectory = fullfile(dataFolder, replicateNames(iReplicate));
+
+        % Get all of the excel file names
+        textData = dir(fullfile(replicateDirectory, "*.txt")); 
+        textNames = {textData.name}.'; 
+
+        % Store the number of the excel files the replicate folder has
+        nNumOfTextFiles = length(textNames); 
+
+        % Loop through every excel file in the current replicate folder
+        for iTextFile = 1 : nNumOfTextFiles
+            % Store path name
+            currentTextFilePath = textNames{iTextFile}; 
+
+            % Perform some file validation
+            if contains(currentTextFilePath, "_" + sDataType + "_")
+                % Get the first two letters of the excel file
+                sFilePrefix = currentTextFilePath(1:2); 
+
+                % Get the cupID 
+                sCupID = currentTextFilePath(1:4); 
+
+                % Get the Step  Number
+                asSplitString = split(currentTextFilePath, "_");
+                nCurrentStepNumber = str2num(asSplitString{2}); 
+                
+                % Create a graph title
+                sGraphTitle = sDataType + " (Step " + num2str(nStepNumber) + ") : " +  getFormulaName(sFilePrefix) ;
+
+                % Check to see if this graph title is available for usre
+                [nFigNum, asPlotTitles] = checkAvailability(asPlotTitles, sGraphTitle); 
+
+                % Store full file directory
+                fullTextFileDirectory = fullfile(replicateDirectory, currentTextFilePath); 
+
+                % Load in data
+                rawTable = readtable(fullTextFileDirectory, VariableNamingRule="preserve"); 
+
+                % Change variable names
+                rawTable.Properties.VariableNames = VariableNames;
+                
+                % Switch between steps
+                % OCV (Steps 1)
+                if (nStepNumber == 1 ) && nStepNumber == nCurrentStepNumber
+                    % Get the x and y data
+                    x = rawTable.(xVar); 
+                    y = rawTable.(yVar); 
+                    
+                    % Restart time 
+                    x = x - x(1); 
+
+                    % Plot this 
+                    figure(nFigNum)
+                    hold on; 
+                    plot(x, y, "DisplayName", sCupID)
+                    xlabel(sXLabel)
+                    ylabel(sYLabel)
+                    title(sGraphTitle)
+                    legend('Location','best');
+
+                % CA (Step 2)
+                elseif nStepNumber == 2 && nStepNumber == nCurrentStepNumber
+                    % Get the x and y data
+                    x = rawTable.(xVar); 
+                    y = rawTable.(yVar);
+                    
+                    % Convert to hours
+                    x = x / 3600; 
+
+                    % Plot this 
+                    figure(nFigNum)
+                    hold on; 
+                    plot(x, y, "*", "DisplayName", sCupID)
+                    xlabel(sXLabel)
+                    ylabel(sYLabel)
+                    title(sGraphTitle)
+                    legend('Location','best');
+
+                % MB (Step 3)
+                elseif nStepNumber == 3 && nStepNumber == nCurrentStepNumber
+                    % Get the x and y data
+                    x = rawTable.(xVar); 
+                    y = rawTable.(yVar);
+                    
+                    % Convert to hours
+                    x = x / 3600; 
+
+                    % Get the characteristic mass
+                    fCharMass = getCharacteristicMass(fullTextFileDirectory);
+
+                    % Convert current to current/mass
+                    y = y / fCharMass; 
+
+                end
+            end
+        end
+        hold off; 
+
+        % Look at the next replicate
+        iReplicate = iReplicate + 1; 
+    end
+end
+
+function[replicateData] = readInData(dataFolder, nNumOfReplicates, replicateNames, VariableNames, nProcess, xVar, yVar, bCharMass)
+% This function will assist in reading in the data and creating a structure
+% that can be used for our data analysis processes. The output of this
+% function IS SPECIFIC TO THE PROCESS THAT IS BEING CALLED. E.g, if called
+% for the LSV file, it will read in the data that is important to the LSV
+% file.  
+% Input
+%   dataFolder          The "Data" file path appended to the end of the
+%                           data folder
+%   nNumOfReplicates    The number of replicates 
+%   replicateNames      The names of the replicate folders 
+%   VariableNames       The variable names corresponding to the specific
+%                           data analysis process we are performing
+%   nProcess            Int; the process we are performing
+%   bCharMass           Boolean; If true, then we will look for
+%                           characteristic mass in the file
+% Output 
+%   dataStructure       data structure containing all data of the form: 
+%       .replicate().step().key().dat
+%       .replicate().step().key().fullCupID
+
+    % Local Variable
+    %   cupKey              Container which has "AA" : 1 key value pairs where the
+    %                           key is the cup prefix and value is the counter
+    %                           variable associated with it
+    %   replicateDirectory  The replicate directory with all the files
+    %   
+    
+    % Initialize the number of steps
+    nSteps = 12; 
+
+    % Record the sFilePrefix into a dictionary
+    cupDict = dictionary(); 
+    counter = 1; 
+
+    % Look at the names of the files in replicate 1 folder
+    replicateDirectory = fullfile(dataFolder, 'Replicate 1');
+
+    % Get all of the excel file names
+    textData = dir(fullfile(replicateDirectory, "*.txt")); 
+    textNames = {textData.name}.'; 
+
+    % Store the number of the excel files the replicate folder has
+    nNumOfTextFiles = length(textNames); 
+
+    % Loop through every txt file and record the cup prefixes
+    for iTextFile = 1 : nNumOfTextFiles
+        % Store path name
+        currentTextFilePath = textNames{iTextFile}; 
+
+        % Get the file prefix 
+        sFilePrefix = currentTextFilePath(1:2); 
+
+        % Check to see if this is already in the dictionary
+        if ~isConfigured(cupDict)
+            alreadyExists = 0;
+        else
+            alreadyExists = any(cupDict.keys == sFilePrefix); 
+        end
+
+        if ~alreadyExists
+            cupDict(sFilePrefix) = counter; 
+            counter = counter + 1; 
+        end
+
+    end
+    
+    % Get the number of cup keys
+    nCupKeys = length(cupDict.keys);
+
+    % Create the data structure
+    for iReplicate = 1 : nNumOfReplicates
+        % Obtain the replicate directory
+        replicateDirectory = fullfile(dataFolder, replicateNames(iReplicate));
+
+        % Get all of the excel file names
+        textData = dir(fullfile(replicateDirectory, "*.txt")); 
+        textNames = {textData.name}.'; 
+
+        % Store the number of the excel files the replicate folder has
+        nNumOfTextFiles = length(textNames);
+
+        % Loop through every excel file in the current replicate folder
+        for iTextFile = 1 : nNumOfTextFiles
+            % Store path name
+            currentTextFilePath = textNames{iTextFile};
+
+            % Get the Step  Number
+            asSplitString = split(currentTextFilePath, "_");
+            nCurrentStepNumber = str2num(asSplitString{2});
+            
+            if nCurrentStepNumber == nProcess
+                % Get the file prefix
+                sFilePrefix = currentTextFilePath(1:2); 
+    
+                % Store full file directory
+                fullTextFileDirectory = fullfile(replicateDirectory, currentTextFilePath); 
+    
+                % Load in data
+                rawTable = readtable(fullTextFileDirectory, VariableNamingRule="preserve");
+
+                % Change variable names
+                rawTable.Properties.VariableNames = VariableNames; 
+
+                % Adjust data if needed
+                x = rawTable.(xVar); 
+                y = rawTable.(yVar); 
+
+                % Check if we are dividing by charactersitic mass
+                fCharMass = 1; 
+                if bCharMass
+                    fCharMass = getCharacteristicMass(fullTextFileDirectory); 
+                end
+
+                % Store every ounce of data
+                replicateData(iReplicate).Step(nCurrentStepNumber).Key(cupDict(sFilePrefix)).dat = [x y]; 
+                replicateData(iReplicate).Step(nCurrentStepNumber).Key(cupDict(sFilePrefix)).fullTable = rawTable; 
+                replicateData(iReplicate).Step(nCurrentStepNumber).Key(cupDict(sFilePrefix)).formula = getFormulaName(sFilePrefix); 
+                replicateData(iReplicate).Step(nCurrentStepNumber).Key(cupDict(sFilePrefix)).cupID = currentTextFilePath(1:4); 
+                replicateData(iReplicate).Step(nCurrentStepNumber).Key(cupDict(sFilePrefix)).amountOfX = length(x);
+                replicateData(iReplicate).Step(nCurrentStepNumber).Key(cupDict(sFilePrefix)).amountOfY = length(y);
+                replicateData(iReplicate).Step(nCurrentStepNumber).Key(cupDict(sFilePrefix)).fCharMass = fCharMass; 
+
+            end
+        end
+    end
+end
+
+% function[dataTable] = readInTable(fullTxtFileDirectory, VariableNames)
+% % This function will not only store the variables from the data, it will
+% % read in the entire table and store it. 
+% % Input
+% %   fullTxtFileDirectory    String; contains the full text directory
+% %   VariableNames           String cell array; all variable names in file
+% % Output
+% %   dataTable               table; all of the data from the text file
+% 
+%     % Local Variable
+%     %
+% 
+%     % Read in table
+%     dataTable = readtable(fullTxtFileDirectory, VariableNamingRule="preserve"); 
+% 
+%     % Assign all of the Variable names to the columns 
+%     dataTable.Properties.VariableNames = VariableNames; 
+% 
+% end
+
+function[ B ] = fitPowerCurve(func, x, y)
+% This will return the parameters for a power curve. 
+% Input
+%   p       Initial guess of parameters
+%   x       X values
+%   y       y Values 
+% Output
+%   B       Best parameters
+
+    % Local Variables
+    %
+
+    % Create function
+%     sqrt = @(p, x) p(1) * (x .^ p(2)) + p(3); 
+
+    % Create ordinary least squars regression function
+    LSR = @(b) sum((func(b, x) - y).^2); 
+
+    % Optimize
+    opts = optimset('MaxFunEvals', 1000, 'MaxIter', 500); 
+
+    % Minimize the LSR func
+    B = fminsearch(LSR, rand(3, 1), opts); 
+end
+
+% RUN MB PROCEDURE
+function[asPlotTitles] = runMBProcedure(dataFolder, nNumOfReplicates, replicateNames, asPlotTitles)
+% The runMbProcedure will run analysis on the MB files in the data folder.
+% There are two different MB steps in the entire process. The biggest 
+% difference between this procedure and the others is that the two steps 
+% here ask for two different axes. So, to avoid any confusion I will go
+% ahead and lock the choices in so that they cannot be changed. 
+% Input
+%   dataFolder          The "Data" file path appended to the end of the
+%                           data folder
+%   nNumOfReplicates    The number of replicates 
+%   replicateNames      The names of the replicate folders 
+%   asPlotTitles        String array; holds existing plot titles
+% Output
+%   asPlotTitles        String array; holds existing plot titles
+
+    % Local Variables
+    %   sDataType       String; the data we are looking at 
+    %   VariableNames   The new variable names for the columns of the data
+    %   xVar            string; the x variable we are looking at 
+    %   yVar            String; the y variable of interest
+    %   sXLabel         string; the preferred x label
+    %   sYLabel         string; the preferred y label 
+
+
+    % Set Data type
+    sDataType = "MB"; 
+
+    % Define variable names
+    VariableNames = {'mode', 'ox/red', 'error', 'control changes', ...
+                    'NS changes', 'counter inc.', 'NS', 'I Range', 'time/s', 'control/V/mA', 'Ewe/V', ...
+                    'I/mA', 'dq/mA.h', '(Q-Qo)/mA.h', '|Energy|/W.h', 'Energy Charge/W.h', ...
+                    'Energy discharge/W.h', 'Capacitance charge/mF', 'Capacitance discharge/mf', ...
+                    'Q discharge/mA.h', 'Q charge/mA.h', 'Capacity/mA.h', 'Efficiency/%', ...
+                    'control/V', 'control/mA',  'cycle number', 'P/W', 'R/ohm'};
+
+
+%     %% 3. MB
+    % Define step 
+    nProcess = 3; 
+
+    % Define x and y variables
+    xVar = 'time/s'; 
+    yVar = 'I/mA'; 
+
+    % Update asPlotTitles and plot 
+%     asPlotTitles = runGeneralReplicatePlot(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, sXLabel, sYLabel, nProcess, asPlotTitles); 
+
+%     %%      Step 3 MB Analysis
+    [asPlotTitles, results, voltage_current_data] = runMB_03DataAnalysis(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, nProcess, xVar, yVar, asPlotTitles);
+
+%     %%      Step 4 MB Analysis
+    % Define step
+    nProcess = 4; 
+
+    % Define x and y variables
+    xVar = 'time/s'; 
+    yVar = 'I/mA'; 
+    asPlotTitles = runMB_04DataAnalysis(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, nProcess,  xVar, yVar, asPlotTitles, results); 
+
+
+    % Overlay each scan rate for charge and discharge on the plot
+    asPlotTitles = runMB_OverlayChargePlots(dataFolder, replicateNames, VariableNames, nNumOfReplicates, asPlotTitles); 
+end
+
+function[asPlotTitles, results, voltage_current_data] = runMB_03DataAnalysis(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, nProcess, xVar, yVar, asPlotTitles)
+% This function will run the necessary data analysis process on the MB
+% data. 
+% Input
+%
+% Output
+%
+
+    % Local Variables
+    %   nIterationLimit         Initial iteration limit which limits the
+    %                               amount of steps our algorithm can take
+    %                               without improvement
+    %   fIterationScalar        Iteration scalar which will reduce the
+    %                               nIterationLimit var. 
+    %   fVariationThreshold     Functions to capture the smallest increase
+    %                               in values for determining the
+    %                               integration end index
+    %   fVariationScalar        This reduces the fVariationThreshold and
+    %                               allows for the algorithm to accept even
+    %                               smaller changes 
+    %   fThresh                 Used to find the starting index of the
+    %                               integral
+
+    % Assign boolean value
+    bCharMass = 1; 
+
+    % Create threshold value
+    nThreshold = -700; 
+
+    % Read in all data
+    time_current_data = readInData(dataFolder, nNumOfReplicates, replicateNames, VariableNames, nProcess, xVar, yVar, bCharMass); 
+    time_cycle_data = readInData(dataFolder, nNumOfReplicates, replicateNames, VariableNames, nProcess, 'time/s', 'cycle number', 0); 
+    voltage_current_data = readInData(dataFolder, nNumOfReplicates, replicateNames, VariableNames, nProcess, 'Ewe/V', 'I/mA', 0); 
+
+
+    % Number of formulas
+    nNumOfFormulas = length(time_current_data(1).Step(nProcess).Key); 
+
+    % Read in the sequence numbers from the text file
+    for iFormula = 1 : length(time_cycle_data(1).Step(nProcess).Key)
+        for iReplicate = 1 : nNumOfReplicates
+            % Load in your time (hr) and current (mA/g) data
+            xTime_raw = time_current_data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 1); 
+            yCurrent_raw = time_current_data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 2); 
+
+            % Transform x and y data accordingly
+            xHour = xTime_raw / 3600; 
+            yCurrent = yCurrent_raw / time_current_data(iReplicate).Step(nProcess).Key(iFormula).fCharMass; 
+
+            % Create a new structure for each formula 
+            cycle_change_times_formula(iFormula).change_indices = []; 
+
+            % Store the current data
+            yCycle_raw = time_cycle_data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 2); 
+
+            % Loop through cycle number column
+            iCycleChange = 1; 
+            cycle_change_times_formula(iFormula).change_indices(1) = iCycleChange;
+
+            iIndex = 1; 
+            while iIndex <= length(xHour)
+                % Check if yCycle has increased
+                if yCycle_raw(iIndex) > yCycle_raw(cycle_change_times_formula(iFormula).change_indices(end))
+                    cycle_change_times_formula(iFormula).change_indices(end+1) = iIndex; 
+                end
+                
+                % Increment iIndex
+                iIndex = iIndex + 1; 
+            end
+
+            % Initialize segment array
+            allLocalMinima(iReplicate).Formula(iFormula).anSegmentMinimums = [];
+            allLocalMinima(iReplicate).Formula(iFormula).anMinIndices = [];
+
+            % Initialize a variation threshold
+            fVariationThreshold = 5; 
+
+            % Get the local minima of each segment 
+            iSegment = 1; 
+            while iSegment <= length(cycle_change_times_formula(iFormula).change_indices)
+                % Check to see if we are in the last segment
+                if iSegment == length(cycle_change_times_formula(iFormula).change_indices)
+                    % Get the beginning and ending indices
+                    nBeginning = cycle_change_times_formula(iFormula).change_indices(iSegment); 
+                    nEnding = length(xHour); 
+                else
+                    % Get the beginning and ending indices
+                    nBeginning = cycle_change_times_formula(iFormula).change_indices(iSegment); 
+                    nEnding = cycle_change_times_formula(iFormula).change_indices(iSegment + 1) - 1; 
+                end
+
+                % Initialize a constraint counter
+                nIterationLimit = 500;
+                bIterationCounter = 0; 
+
+                fSegmentMin = 0; 
+                nMinIndex = nBeginning; 
+                nIterationCounter = 1; 
+
+                nIndex = nBeginning; 
+
+                while nIndex <= nEnding && nIterationCounter <= nIterationLimit
+                    % Check if iteration counter is on
+                    if bIterationCounter == 0 % if counter is off
+                        % Turn it on for the first time
+                        if (abs(abs(yCurrent(nIndex)) - abs(fSegmentMin))) > fVariationThreshold && (yCurrent(nIndex) < fSegmentMin) && (yCurrent(nIndex) > nThreshold)
+                            fSegmentMin = yCurrent(nIndex); 
+                            nMinIndex = nIndex; 
+                            bIterationCounter = 1; 
+                        end
+                    else % counter is now on
+                        if (yCurrent(nIndex) < fSegmentMin) && (yCurrent(nIndex) > nThreshold)
+                            % Restart the iteration counter
+                            nIterationCounter = 1; 
+
+                            % Store the new minimum
+                            fSegmentMin = yCurrent(nIndex); 
+                            nMinIndex = nIndex; 
+                        else
+                            nIterationCounter = nIterationCounter + 1; 
+                        end
+                    end
+                    % Increase nIndex
+                    nIndex = nIndex + 1; 
+                end
+                 
+                % Store all of the minimas in a different structure
+                allLocalMinima(iReplicate).Formula(iFormula).anSegmentMinimums(iSegment) = fSegmentMin; 
+                allLocalMinima(iReplicate).Formula(iFormula).anMinIndices(iSegment) = nMinIndex; 
+
+                % Increment the segment
+                iSegment = iSegment + 1; 
+            end
+
+            % Sort the segment minimums in ascending order and store indices
+            [~, indices] = sort(allLocalMinima(iReplicate).Formula(iFormula).anSegmentMinimums, 'ascend'); 
+            anValuableIndices = indices(1:6); 
+
+            % Store the important indices (the smallest ones)
+            allLocalMinima(iReplicate).Formula(iFormula).anMinIndices = allLocalMinima(iReplicate).Formula(iFormula).anMinIndices(anValuableIndices);
+            allLocalMinima(iReplicate).Formula(iFormula).anSegmentMinimums = allLocalMinima(iReplicate).Formula(iFormula).anSegmentMinimums(anValuableIndices); 
+
+            % Resort them in descending order
+            [~, indices] = sort(allLocalMinima(iReplicate).Formula(iFormula).anSegmentMinimums, 'descend');
+            anResortedIndices = indices(1:6); 
+
+            % Store the minIndices and segmentMinimums in descending order
+            allLocalMinima(iReplicate).Formula(iFormula).anMinIndices = allLocalMinima(iReplicate).Formula(iFormula).anMinIndices(anResortedIndices);
+            allLocalMinima(iReplicate).Formula(iFormula).anSegmentMinimums = allLocalMinima(iReplicate).Formula(iFormula).anSegmentMinimums(anResortedIndices);
+
+            % DEBUG: Print the minimum of each segment
+%             iSegment = 1; 
+%             while iSegment <= 6
+%                 fSegmentMin =  allLocalMinima(iReplicate).Formula(iFormula).anSegmentMinimums(iSegment); 
+%                 nMinIndex = allLocalMinima(iReplicate).Formula(iFormula).anMinIndices(iSegment); 
+%                 fprintf('Min of segment %d (of %s): %f at second %f\n', iSegment, time_current_data(iReplicate).Step(nProcess).Key(iFormula).cupID, fSegmentMin, xTime_raw(nMinIndex));
+% 
+%                 % Increment segment
+%                 iSegment = iSegment + 1; 
+%             end
+
+%             %% Plot the vertical lines & the local mimima 
+%             sGraphTitle = "Replicate " + iReplicate + ", " + sDataType + " (Step " + nProcess + ", Peak Current) - " + getFormulaName(time_cycle_data(iReplicate).Step(nProcess).Key(iFormula).cupID(1:2)); 
+%             [nFigNum, asPlotTitles] = checkAvailability(asPlotTitles, sGraphTitle); 
+%             figure(nFigNum)
+% 
+%             % Check to see if there are more than 6 minimums
+%             if length(allLocalMinima(iReplicate).Formula(iFormula).anMinIndices) > 10 
+%                 plot(xHour, yCurrent, 'r.')
+%             else
+%                 plot(xHour, yCurrent, 'k.')
+%             end
+%             hold on; 
+%             title(sGraphTitle)
+%             xlabel('Time (hrs)')
+%             ylabel('Current (mA/g)')
+%             xline(xHour(cycle_change_times_formula(iFormula).change_indices))
+%             plot(xHour(allLocalMinima(iReplicate).Formula(iFormula).anMinIndices), yCurrent(allLocalMinima(iReplicate).Formula(iFormula).anMinIndices), '*b')
+%             
+%             %% Store the potential values at the location of lowest current
+            % Load in your voltage and current data
+            xVoltage_raw = voltage_current_data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 1); 
+
+            % Store the local minima indicec
+            anMinimaIndices = allLocalMinima(iReplicate).Formula(iFormula).anMinIndices; 
+
+            % Locate the peak voltage at the index of lowest current
+            results(iReplicate).Formula(iFormula).afMinVoltagePeaks = xVoltage_raw(anMinimaIndices);
+
+%             %% Graph results
+%             sGraphTitle = "Replicate " + iReplicate + ", " + sDataType + " (Step " + nProcess + ", Voltage Current) - " + getFormulaName(voltage_current_data(iReplicate).Step(nProcess).Key(iFormula).cupID(1:2)); 
+%             [nFigNum, asPlotTitles] = checkAvailability(asPlotTitles, sGraphTitle); 
+%             figure(nFigNum)
+%             % Check to see if there are more than 6 minimums
+%             if length(allLocalMinima(iReplicate).Formula(iFormula).anMinIndices) > 10 
+%                 plot(xVoltage_raw, yCurrent, 'r.')
+%             else
+%                 plot(xVoltage_raw, yCurrent, 'k.')
+%             end
+%             hold on; 
+%             title(sGraphTitle)
+%             xlabel('Potential (V)')
+%             ylabel('Current (mA/g)')
+%             plot(xVoltage_raw(anMinimaIndices), yCurrent(anMinimaIndices), '*b')
+
+        end
+    end
+
+%     %% Find maxima of Peak Charge Voltage
+    time_charge_data = readInData(dataFolder, nNumOfReplicates, replicateNames, VariableNames, nProcess, xVar, 'Q charge/mA.h', bCharMass); 
+    time_cycle_data = readInData(dataFolder, nNumOfReplicates, replicateNames, VariableNames, nProcess, 'time/s', 'cycle number', 0); 
+
+    for iFormula = 1 : length(time_cycle_data(1).Step(nProcess).Key)
+        for iReplicate = 1 : nNumOfReplicates
+            % Load in your time and charge data
+            xTime_raw = time_charge_data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 1); 
+            yCharge_raw = time_charge_data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 2); 
+
+            % Transform x -> hrs and y -> mAh/g
+            xHour = xTime_raw / 3600; 
+            yCharge = yCharge_raw / time_charge_data(iReplicate).Step(nProcess).Key(iFormula).fCharMass; 
+
+            % Create a new structure for each formula
+            cycle_change_times_formula(iFormula).change_indices = []; 
+
+            % Store the raw cycle data
+            yCycle_raw = time_cycle_data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 2); 
+
+            % Loop through the cycle number column
+            iCycleChange = 1; 
+            cycle_change_times_formula(iFormula).change_indices(1) = iCycleChange; 
+
+
+            iIndex = 1; 
+            while iIndex <= length(xHour)
+                % Check to see if cycle has increased
+                if yCycle_raw(iIndex) > yCycle_raw(cycle_change_times_formula(iFormula).change_indices(end)) % && (iIndex - cycle_change_times_formula(iFormula).change_indices(end) > 70) % So we don't store random segments
+                    cycle_change_times_formula(iFormula).change_indices(end+1) = iIndex; 
+                end
+
+                % Increment index
+                iIndex = iIndex + 1; 
+            end
+
+            % Initialize segment array
+            allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums = []; 
+            allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices = []; 
+
+            % Get the local maxima of each segment
+            iSegment = 1; 
+            while iSegment <= length(cycle_change_times_formula(iFormula).change_indices)
+                % Check to see if we are in the last segment
+                if iSegment == length(cycle_change_times_formula(iFormula).change_indices)
+                    % Get the beginning and ending indices
+                    nBeginning = cycle_change_times_formula(iFormula).change_indices(iSegment); 
+                    nEnding = length(xHour); 
+                else
+                    % Get the beginning and ending indices
+                    nBeginning = cycle_change_times_formula(iFormula).change_indices(iSegment); 
+                    nEnding = cycle_change_times_formula(iFormula).change_indices(iSegment + 1) - 1; 
+                end
+
+                fSegmentMax = 0; 
+                nMaxIndex = nBeginning; 
+                for nIndex = nBeginning : nEnding
+                    % Find the largest value 
+                    if yCharge(nIndex) > fSegmentMax  % && iSegment < 9 not including this because sometimes we have over 40 cycles and we don't wanna mute those
+                        fSegmentMax = yCharge(nIndex); 
+                        nMaxIndex = nIndex; 
+                    end
+                end
+
+                % Store al lof the maximas in a different structure
+                allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums(iSegment) = fSegmentMax; 
+                allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices(iSegment) = nMaxIndex;
+
+                % Increment the segment
+                iSegment = iSegment + 1; 
+            end
+
+            anSegmentMaximums = allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums;
+            anMaximumIndices = allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices; 
+
+            % Drop each segment that has no max larger than 0
+            anSegmentMaximumsNew = []; 
+            anChangeIndicesNew = []; 
+
+            j = 1; 
+
+            for iSegment = 1 : length(anSegmentMaximums)
+                % If maximum is 0 (close to 0)
+                if abs(anSegmentMaximums(iSegment) - 0) > 3e-5
+                    anSegmentMaximumsNew(j) = anSegmentMaximums(iSegment); 
+                    anChangeIndicesNew(j) = cycle_change_times_formula(iFormula).change_indices(iSegment); 
+                    j = j + 1;
+                end
+            end
+
+            % Store the new segment Maximums in the structure
+            [~, DescendingOrder] = sort(anSegmentMaximumsNew, 'descend');
+
+            % Only keep the order indices of the largest 8 values
+            if length(anChangeIndicesNew) > 8
+                DescendingOrder = DescendingOrder(1:8); 
+            end
+
+            importantOrder = DescendingOrder(1:6); 
+            anSmallPeaks = anSegmentMaximumsNew; 
+
+            anSmallPeaks(importantOrder) = 0; 
+
+            i = 1; 
+            j = 1; 
+            afMaxes = []; 
+            anIndices = []; 
+
+            % Chop off last value if needed. Check if last value in small Peaks is nonzero
+            if anSmallPeaks(end) ~= 0
+                anSmallPeaks = anSmallPeaks(1:end-1); 
+            end
+
+            % Now loop through and add the necessary values
+            while i <= length(anSmallPeaks) && j <= 6 
+                if anSmallPeaks(i) == 0 && i ~= length(anSmallPeaks) 
+                    if anSegmentMaximumsNew(i) ~=0 || anSmallPeaks(i+1) ~= 0
+                        afMaxes(j) = anSegmentMaximumsNew(i) + anSmallPeaks(i+1); 
+                        anIndices(j) = anMaximumIndices(i); 
+                        j = j + 1; 
+                    end
+                end
+
+                if i == length(anSmallPeaks) 
+                    afMaxes(j) = anSegmentMaximumsNew(i); 
+                    anIndices(j) = anMaximumIndices(i); 
+                end
+                i = i + 1; 
+            end
+
+            % Store the new segment Maximums in the structure
+            allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums = afMaxes;
+
+            % DEBUG: Print the maximum of each segment
+%             fprintf('Replicate %d, Formula %d\n', iReplicate, iFormula)
+%             iSegment = 1; 
+%             while iSegment <= 6
+%                 fSegmentMax =  afMaxes(iSegment); 
+%                 nMaxIndex = anIndices(iSegment); 
+%                 fprintf("Max of 'segment %d' (of %s): %f at second %f\n", iSegment, time_charge_data(iReplicate).Step(nProcess).Key(iFormula).cupID, fSegmentMax, xTime_raw(nMaxIndex));
+% 
+%                 % Increment segment
+%                 iSegment = iSegment + 1; 
+%             end
+            
+            % Create array of maximums that are only meant for plotting
+            afPlottingMaximums = anSegmentMaximumsNew(DescendingOrder); 
+
+            % Store the max discharge capacity of each replicate of each formula
+            results(iReplicate).Formula(iFormula).finalDischargeCapacity = allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums(end); 
+
+%             %% Plot the vertical lines & the local maxima 
+%             sGraphTitle = "Replicate " + iReplicate + ", " + sDataType + " (Step " + nProcess + "), Discharge) - " + getFormulaName(time_charge_data(iReplicate).Step(nProcess).Key(iFormula).cupID(1:2)); 
+%             [nFigNum, asPlotTitles] = checkAvailability(asPlotTitles, sGraphTitle); 
+%             figure(nFigNum)
+% 
+%             % Check to see if there are more than 6 minimums
+%             if length(anIndices) > 10
+%                 plot(xHour, yCharge, 'g.')
+%             else
+%                 plot(xHour, yCharge, 'k.')
+%             end
+%             hold on; 
+%             title(sGraphTitle)
+%             xlabel('Time (hrs)')
+%             ylabel('Discharge Capacity (mAh/g')
+%             xline(xHour(anChangeIndicesNew), 'r')
+%             plot(xHour(allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices), yCharge(allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices), '*b')
+        end
+    end
+
+    % DEBUG: Print out every ending point
+%     for iFormula = 1 : length(time_cycle_data(1).Step(nProcess).Key)
+%         for iReplicate = 1 : nNumOfReplicates
+%             fprintf("Replicate %d of Formula %s has a value of %f \n", iReplicate, time_charge_data(iReplicate).Step(nProcess).Key(iFormula).cupID, results(iReplicate).Formula(iFormula).finalDischargeCapacity)
+%         end
+%         fprintf('\n')
+%     end
+
+%     %% Normalize peak current to prior discharge capacity 
+    % Loop through each replicate of each formula
+    for iFormula = 1 : length(time_cycle_data(1).Step(nProcess).Key)
+        for iReplicate = 1 : nNumOfReplicates
+            % Store the segment maximums and minimums
+            anSegmentMaximums = allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums;  
+            anSegmentMinimums = allLocalMinima(iReplicate).Formula(iFormula).anSegmentMinimums; 
+
+            % Get the number of groups in the anSegmentMaximums array
+            nGroups = length(anSegmentMaximums) - 6; 
+
+            % Initialize the array of group sums
+            afGroupSums = []; 
+
+            % Initialize where the groups start
+            iStarting = 1; 
+
+            if nGroups > 0 
+                % Divide array into nGroups where each group consists of 2 vals from anSegmentMaximums
+                for i = 1 : nGroups
+                    afGroupSums(i) = anSegmentMaximums(iStarting) + ...
+                        anSegmentMaximums(iStarting + 1); 
+                    iStarting = iStarting + 2; 
+                end
+            end
+
+            % Append the rest of the anSegmentMaximums array
+            afGroupSums = [ afGroupSums, anSegmentMaximums(iStarting : end) ]; 
+
+            % Normalize the peak current
+            for iSegment = 1 : 6
+                normalizedPeakCurrent(iReplicate).Formula(iFormula).anSegment(iSegment) = anSegmentMinimums(iSegment) / afGroupSums(iSegment); 
+            end
+        end
+    end
+
+%     %% Average the A/Ah
+    % for every formula, find the average (A/Ah) across the 4 replicates
+    for iFormula = 1 : length(time_cycle_data(1).Step(nProcess).Key)
+        % Initialize the sum 
+        afSumOfNormalizedPeaks = zeros(1, length(normalizedPeakCurrent(1).Formula(1).anSegment)); 
+
+        % Calculate the sum for the nNumOfReplicate replicates
+        for iReplicate = 1 : nNumOfReplicates
+            % Add the current normalized peak 
+            afSumOfNormalizedPeaks = afSumOfNormalizedPeaks + normalizedPeakCurrent(iReplicate).Formula(iFormula).anSegment; 
+        end
+
+        % Calculate the average
+        afAverage = afSumOfNormalizedPeaks / nNumOfReplicates; 
+
+        % Store the average 
+        AverageNormalizedPeakCurrent(iFormula).afAverage = afAverage; 
+        AverageNormalizedPeakCurrent(iFormula).sFormula = time_charge_data(1).Step(nProcess).Key(iFormula).formula; 
+    end
+
+    %% Normalized Charge Rate Plot
+    % This will be a single graph with 8 lines. Each line will consist of 6 points
+
+    % Store the scan rate values
+    afScanRates = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5]; 
+    anScanRate = sqrt(afScanRates); 
+
+    % Create array of unique colors
+%     colors = [[0, 0, 0]; [0, 1, 0]; [0, 0, 1]; [1, 0, 0]; [1, 0, 1]; [0, 1, 1]; [0.4, 0, 0.4]; [1, 0.6, 0]];
+    colors = [[0, 0, 0]; [0, 1, 0]; [0, 0, 1]; [1, 0, 0]; [1, 0, 1]; [0, 1, 1]; [0, 0.5, 0]; [1, 0.6, 0]; [0, 128/255, 1]; [128/255, 0, 1]; [132/255, 186/255, 91/255]; [0.5, 0.5, 0.5]];
+
+    % Plot each formula on the graph 
+    sGraphTitle = ' Charge Rate Normalized (Low Dose)'; 
+    [nFigNum, asPlotTitles] = checkAvailability(asPlotTitles, sGraphTitle); 
+    figure(nFigNum)
+    figureLocationX = 300; 
+    figureLocationY = 100; 
+    width = 800; 
+    height = 800; 
+    set(gcf, 'Position', [figureLocationX, figureLocationY, width, height])
+
+    % Plot the points
+    for iFormula = 1 : length(time_cycle_data(1).Step(nProcess).Key)
+        plots(iFormula) = plot(anScanRate, AverageNormalizedPeakCurrent(iFormula).afAverage, '*', "DisplayName", AverageNormalizedPeakCurrent(iFormula).sFormula, "Color", colors(iFormula, :));
+        hold on; 
+        xlabel('Scan Rate (sqrt(mV/s))')
+        ylabel('Normalized Charge Rate (A/Ah)')
+
+        % Fit line to points
+        xLimits_current = get(gca, 'xlim'); 
+        
+        [p, S] = polyfit(anScanRate, AverageNormalizedPeakCurrent(iFormula).afAverage, 1); 
+        
+        x1 = linspace(xLimits_current(1), xLimits_current(2)); 
+        y1 = polyval(p, x1);
+
+        LinRegression(iFormula).aXData = x1; 
+        LinRegression(iFormula).aYData = y1; 
+    end  
+
+    % Plot the regression
+    for iFormula = 1: length(time_cycle_data(1).Step(nProcess).Key)
+        plot(LinRegression(iFormula).aXData, LinRegression(iFormula).aYData, 'REPLACE_WITH_DASH_DASH', "Color", colors(iFormula, :))
+    end
+   hold off; 
+   lgd = legend(plots, 'FontSize', 10, "Location", "best");
+    
+   %% Final Charge Rates for Every Replicate
+   fprintf("Final Charge Rate for Every Replicate\n")
+    for iFormula = 1 : length(time_current_data(1).Step(nProcess).Key)
+        for iReplicate = 1 : nNumOfReplicates
+            fprintf("Replicate %d (%s) of Formula %s at 0.5 mV/s: %f\n", iReplicate, time_current_data(iReplicate).Step(nProcess).Key(iFormula).cupID, AverageNormalizedPeakCurrent(iFormula).sFormula, normalizedPeakCurrent(iReplicate).Formula(iFormula).anSegment(end));
+        end
+        fprintf("\n")
+    end
+
+    % Print column of values
+    for iFormula = 1 : length(time_current_data(1).Step(nProcess).Key)
+        for iReplicate = 1 : nNumOfReplicates
+            fprintf("%f \n", normalizedPeakCurrent(iReplicate).Formula(iFormula).anSegment(end))
+        end
+    end
+
+    fprintf('\n')
+
+   %% Final Discharge Capacity for Every Replicate
+   fprintf("\nFinal Discharge Capacity for Every Replicate\n")
+   for iFormula = 1 : nNumOfFormulas
+       % Get formula name 
+       sFormulaName = AverageNormalizedPeakCurrent(iFormula).sFormula; 
+       for iReplicate = 1 : nNumOfReplicates
+           % Get the cup ID
+           sCupID = time_current_data(iReplicate).Step(nProcess).Key(iFormula).cupID; 
+
+           % Get the final discharge capacity
+           C_d = allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums(end);
+
+           % Print the results
+           fprintf("Replicate %d (%s) of Formula %s at %0.2f mV/s: %f \n", iReplicate, sCupID, sFormulaName, afScanRates(end), C_d)
+       end
+       fprintf("\n")
+   end
+   fprintf("\n")
+
+   % Print column of values
+   for iFormula = 1 : nNumOfFormulas
+       for iReplicate = 1 : nNumOfReplicates
+           % Get the final discharge capacity
+           C_d = allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums(end);
+
+           % Print the results
+           fprintf("%f \n", C_d)
+       end
+       fprintf("\n")
+   end
+   fprintf("\n")
+   
+
+   %% Average Normalized Charge Rate at Square Root of Every Scan Rate
+   % Print the average A/Ah values
+    for iFormula = 1 : length(time_current_data(1).Step(nProcess).Key)
+        counter = 1; 
+        for fScanRate = anScanRate             
+            fprintf("Formula %s at square root of scan rate %f (%.4f): %f \n", AverageNormalizedPeakCurrent(iFormula).sFormula, afScanRates(counter), fScanRate, AverageNormalizedPeakCurrent(iFormula).afAverage(counter))
+            counter = counter + 1; 
+        end
+        fprintf("\n")
+    end
+
+   fprintf("\n")
+   %% Final Charge Rates (average)
+   for iFormula = 1 : length(time_current_data(1).Step(nProcess).Key)
+       fprintf("Charge rate at 0.5 mV/s of formula %35s: %f \n", AverageNormalizedPeakCurrent(iFormula).sFormula, AverageNormalizedPeakCurrent(iFormula).afAverage(end))
+   end
+
+   fprintf("\n")
+   % Print column of values 
+   for iFormula = 1 : length(time_current_data(1).Step(nProcess).Key)
+       fprintf("%f \n", AverageNormalizedPeakCurrent(iFormula).afAverage(end))
+   end
+
+    %% Charge Efficiency at Every Scan Rate for Every Replicate
+    % Take the integral of every interval
+    for iFormula = 1 : nNumOfFormulas
+        for iReplicate = 1 : nNumOfReplicates
+            % Read in the charge rate local maximums (c_d values)
+            anChargeRateLocalMaximums = allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums; 
+
+            % Find the numerator of the charge efficiency calculation (C_c)
+            % Load in your time (hr) and current (mA/g) data
+            xTime_raw = time_current_data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 1); 
+            yCurrent_raw = time_current_data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 2); 
+
+            % Transform x and y data accordingly
+            xTime_raw = xTime_raw - xTime_raw(1); 
+            xHour = xTime_raw / 3600; 
+            yCurrent = yCurrent_raw / time_current_data(iReplicate).Step(nProcess).Key(iFormula).fCharMass; 
+
+%             % Create plots of data
+%             sGraphTitle = "Replicate " + iReplicate + " of Formula " + getFormulaName(time_current_data(iReplicate).Step(nProcess).Key(iFormula).cupID(1:2)) + " (" + time_current_data(iReplicate).Step(nProcess).Key(iFormula).cupID + ") ";
+%             [nFigNum, asPlotTitles] = checkAvailability(asPlotTitles, sGraphTitle);
+%             figh = figure(nFigNum); 
+%             plot(xHour, yCurrent, 'k')
+%             hold on; 
+
+            % Read in the sequence data
+            anSequences = time_current_data(iReplicate).Step(nProcess).Key(iFormula).fullTable.('NS');
+            
+            % Find all the appropriate sequences
+            anBeginIndex = []; 
+            anEndIndex = []; 
+            iBegin = 1; 
+            iEnd = 1; 
+
+            for i = 1 : length(anSequences)
+                % Record every six
+                if mod(anSequences(i), 6) == 3 && length(anBeginIndex) == length(anEndIndex)
+                    % Record the sequence index
+                    anBeginIndex(iBegin, 1) = i; 
+
+                    % Update beginning index
+                    iBegin = iBegin + 1; 
+                end
+
+                % Record the end index
+                if ~isempty(anBeginIndex) && length(anEndIndex) < length(anBeginIndex) && anSequences(i) > anSequences(anBeginIndex(end))
+                    % Record the index of the end of the sequence
+                    anEndIndex(iEnd, 1) = i - 1; 
+
+                    % Update the ending index
+                    iEnd = iEnd + 1; 
+                end
+            end
+
+            % Store the ranges in a matrix
+            aanRanges = [anBeginIndex anEndIndex]; 
+
+            % Plot the correct sequences
+            for iRange = 1 : length(aanRanges(:, 1))
+                % Get the beginning and ending indices
+                nBegin = aanRanges(iRange, 1); 
+                nEnd = aanRanges(iRange, 2); 
+
+                % Plot 
+                plot(xHour(nBegin : nEnd), yCurrent(nBegin : nEnd), 'c.')
+            end
+             
+
+            % Initialize iteration limit & variation threshold for each ns
+            nIterationLimit = 85; 
+            fIterationScalar = 0.7; % Introduced bc datasets are smaller in 
+                                    % later sequences
+
+            fVariationThreshold = 0.64; 
+            fVariationScalar = 0.4; % Used bc as datasets become smaller, 
+                                    % the values become more spread out &
+                                    % we still want to capture the closest
+                                    % value to 0
+
+            % Assign threshold value for start of integral
+            fThresh = 0.05; 
+
+            % Get the correct range within the interval nBegin : nEnd
+            for iInterval = 1 : length(aanRanges(:, 1))
+                % Store the beginning & ending indices of intervals
+                nBegin = aanRanges(iInterval, 1); 
+                nEnd = aanRanges(iInterval, 2); 
+
+                % Initialize the begin & end indices for integration area
+                nIntegralStart = nBegin; 
+                nIntegralEnd = nEnd; 
+
+                % Define iteration counter for end of interval
+                nIterationLimit = floor(nIterationLimit*fIterationScalar); 
+                fVariationThreshold = fVariationScalar * fVariationThreshold;   
+                bIterationCounter = 0; 
+                nIterationCounter = 1; 
+
+                % Iterator for the end index
+                iEndDifference = 0; 
+
+                % Look through every index to find start
+                for iCurrIndex = nBegin : nEnd
+                    % Find where to start integral 
+                    % if our line is decreasing         AND  if the distance from zero is smaller than fThresh
+                    if (yCurrent(iCurrIndex + 1) < yCurrent(iCurrIndex)) && abs(yCurrent(iCurrIndex) - 0) < fThresh 
+                        % Store starting index
+                        nIntegralStart = iCurrIndex; 
+                    end
+                end
+
+                % Inityialize current end index
+                fIntegralEndMax = yCurrent(nEnd); 
+
+                % Check to see if it either instant decrease or increase
+                if yCurrent(nEnd - 10) < yCurrent(nEnd)
+                    nIntegralEnd = nEnd; 
+                else
+                    % Find the end index
+                    for iCurrIndex = nEnd : -1 : nBegin
+                        % if the end index is after the start index AND we have not hit the iteration limit yet
+                        if iCurrIndex > nIntegralStart && nIterationCounter < nIterationLimit
+                            % if not turned on
+                            if bIterationCounter == 0
+                                % if disance between points bigger than variation threshold AND the values are increasing
+                                if abs(abs(yCurrent(iCurrIndex)) - abs(fIntegralEndMax)) > fVariationThreshold && yCurrent(iCurrIndex) > fIntegralEndMax
+                                    fIntegralEndMax = yCurrent(iCurrIndex); 
+                                    nIntegralEnd = iCurrIndex; 
+                                    bIterationCounter = 1; 
+                                end
+                            else
+                                % Restart the iteration counter
+                                if yCurrent(iCurrIndex) > fIntegralEndMax
+                                    nIterationCounter = 1; 
+        
+                                    % Store the index
+                                    nIntegralEnd = iCurrIndex; 
+        
+                                    % Store the new max
+                                    fIntegralEndMax = yCurrent(iCurrIndex); 
+                                else
+                                    nIterationCounter = nIterationCounter + 1; 
+                                end
+                            end
+                        end
+                    end
+                end
+
+                % Plot this range
+%                 plot(xHour(nIntegralStart : nIntegralEnd), yCurrent(nIntegralStart : nIntegralEnd), 'r.'); 
+
+                % Plot vertical lines
+%                 xline(xHour(nIntegralStart), Color=[0.8500 0.3250 0.0980], LineStyle="REPLACE_WITH_DASH_DASH")
+%                 xline(xHour(nIntegralEnd), Color=[0.8500 0.3250 0.0980], LineStyle="REPLACE_WITH_DASH_DASH")
+
+                % Calculate the integral 
+                Q = trapz(xHour(nIntegralStart : nIntegralEnd), yCurrent(nIntegralStart : nIntegralEnd));
+                Formula(iFormula).Replicate(iReplicate).Segment(iInterval).C_c = Q; 
+
+                % Print the results 
+                fprintf("Integral of interval %d of Replicate %d of Formula %s: %f \n", iInterval, iReplicate, time_current_data(iReplicate).Step(nProcess).Key(iFormula).formula, Q)
+            end
+            
+%             % Make figure bigger and add labels
+%             pos = get(figh, 'position'); 
+%             set(figh, 'position', [pos(1:2)/4 pos(3:4)*1.5])
+%             xlabel('Time (hrs)')
+%             ylabel('Current (mA/g)')
+%             title(sGraphTitle)
+%             hold off; 
+        end
+    end
+    
+    % Perform the calculation
+    for iFormula = 1 : nNumOfFormulas
+        for iReplicate = 1 : nNumOfReplicates
+            for iInterval = 1 : length(Formula(iFormula).Replicate(iReplicate).Segment)
+                % Get the numerator (C_c)
+                C_c = abs(Formula(iFormula).Replicate(iReplicate).Segment(iInterval).C_c); 
+    
+                % Get the denominator
+                C_d = abs(allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums(iInterval)); 
+
+                % Calculate the charge efficiency
+                Formula(iFormula).Replicate(iReplicate).afChargeEfficiency(iInterval) = (C_c/C_d) * 100;  
+            end
+        end
+    end
+
+    % Plot the charge efficiency for every scan rate
+%     afScanRates = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5]; 
+%     for iFormula = 1 : nNumOfFormulas
+%         for iReplicate = 1 : nNumOfReplicates
+%             % Create plot title 
+%             sFormulaName = getFormulaName(time_current_data(iReplicate).Step(nProcess).Key(iFormula).cupID(1:2));
+%             sCupID = time_current_data(iReplicate).Step(nProcess).Key(iFormula).cupID; 
+%             sGraphTitle = "Charge Efficiency: Replicate " + iReplicate + " of Formula " + sFormulaName + " (" + sCupID + ") ";
+%             [nFigNum, asPlotTitles] = checkAvailability(asPlotTitles, sGraphTitle);
+%             figh = figure(nFigNum);
+% 
+%             % Plot charge eff vs scan rate
+%             plot(afScanRates, Formula(iFormula).Replicate(iReplicate).afChargeEfficiency, 'b*')
+%             xlabel('Scan Rate (mV/s)')
+%             ylabel('Charge Efficiency (%)')
+%             title(sGraphTitle)
+% 
+%         end
+%     end
+%       
+   
+    % Print the charge efficiency at every scan rate
+    fprintf("\nCharge Efficiency at Every Scan Rate\n")
+    afScanRates = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5];
+    for iFormula = 1 : nNumOfFormulas
+        for iReplicate = 1 : nNumOfReplicates
+            % Get formula name
+            sFormulaName = getFormulaName(time_current_data(iReplicate).Step(nProcess).Key(iFormula).cupID(1:2));
+
+            % Get the cup ID
+            sCupID = time_current_data(iReplicate).Step(nProcess).Key(iFormula).cupID(1:2); 
+
+            for iSegment = 1 : length(Formula(iFormula).Replicate(iReplicate).afChargeEfficiency)
+                % Get the charge efficiency at that scan rate
+                fChargeEfficiency = Formula(iFormula).Replicate(iReplicate).afChargeEfficiency(iSegment); 
+
+                % Print
+                fprintf("Replicate %d (%s) of Formula %s at %.2f mV/s: %f%%\n", iReplicate, sCupID, sFormulaName, afScanRates(iSegment), fChargeEfficiency)
+            end
+        end
+        fprintf("\n")
+    end
+
+    % Create column of values
+    for iFormula = 1 : nNumOfFormulas
+        for iReplicate = 1 : nNumOfReplicates
+            for iSegment = 1 : length(Formula(iFormula).Replicate(iReplicate).afChargeEfficiency)
+                % Get the charge efficiency at that scan rate
+                fChargeEfficiency = Formula(iFormula).Replicate(iReplicate).afChargeEfficiency(iSegment); 
+
+                % Print
+                fprintf("%f\n", fChargeEfficiency)
+            end
+        end
+        fprintf("\n")
+    end
+
+    %% Charge Efficiency at Final Scan Rate for Every Replicate
+
+    % Print the charge efficiency at the final scan rate
+    fprintf("\nCharge Efficiency at Final Scan Rate \n")
+    for iFormula = 1 : nNumOfFormulas
+        for iReplicate = 1 : nNumOfReplicates
+            % Get the charge efficiency
+            fFinalChargeEfficiency = Formula(iFormula).Replicate(iReplicate).afChargeEfficiency(end); 
+
+            % Get formula name
+            sFormulaName = getFormulaName(time_current_data(iReplicate).Step(nProcess).Key(iFormula).cupID(1:2));
+
+            % Get the cup ID
+            sCupID = time_current_data(iReplicate).Step(nProcess).Key(iFormula).cupID(1:2);
+
+            % Print the final charge efficiency
+            fprintf("Replicate %d (%s) of Formula %s at %.2f mV/s: %f%%\n", iReplicate, sCupID, sFormulaName, afScanRates(end), fFinalChargeEfficiency); 
+        end
+        fprintf("\n")
+    end
+
+    % Create column of values 
+    for iFormula = 1 : nNumOfFormulas
+        for iReplicate = 1 : nNumOfReplicates
+            % Get the charge efficiency
+            fChargeEfficiency = Formula(iFormula).Replicate(iReplicate).afChargeEfficiency(end);
+            
+            % Print
+            fprintf("%.2f\n", fChargeEfficiency)
+        end
+        fprintf("\n")
+    end
+
+
+            
+%     %% Average Charge Efficiency at Final Scan Rate
+%     % Calculate the average over every formula at every scan rate
+% 
+%     % Produce plots that are similar to normalized charge rate
+
+    %% Normalized Charge Efficiency
+    % This section of the code will normalize the efficiency. 
+
+    % Initialize the correlation factor
+    fCorrFactor = 1; 
+
+    % Initialize the global average discharge capacity
+    fGlobAvgDisCap = 1; 
+
+    % Initialize the global average efficiency
+    fGlobAvgEff = 1; 
+
+    for iFormula = 1 : nNumOfFormulas
+        for iReplicate = 1 : nNumOfReplicates
+            % Get the charge capacity at the last scan rate
+            C_d = allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums(end); 
+
+            % Get the efficiency measured during the test at the last scan rate
+            fChargeEfficiency = Formula(iFormula).Replicate(iReplicate).afChargeEfficiency(end); 
+
+            % Calculate the deviation of measured C_d from the global mean 
+            fDeltaC_d = (C_d - fGlobAvgDisCap) / fGlobAvgDisCap; 
+
+            % Calculate the corrected efficiency
+            Formula(iFormula).Replicate(iReplicate).fCorrectedEfficiency = ...
+                fChargeEfficiency - (fDeltaC_d * fCorrFactor * fGlobAvgEff); 
+
+        end
+    end
+
+    
+
+    %% Average Normalized Charge Efficiency at the Highest Scan Rate
+    fprintf("\nNormalized Charge Efficiency at Every Scan Rate\n")
+    for iFormula = 1 : nNumOfFormulas
+    end
+end
+
+function[asPlotTitles, results] = runMB_04DataAnalysis(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, nProcess, xVar, yVar, asPlotTitles, results)
+% This function will perform the data required analysis on step 4 of the
+% replicates. 
+
+% Assumptions
+    % - There should always be 6 peaks; there is only 1 peak per cycle
+    % - If <6 peaks, disregard file
+    % - If there is a peak missing, then we will simply ignore that file 
+    % - Peak heights are not always in increasing order; we must sort
+    %       according to time to display order
+    % - When finding the maximums, we have a nMinMaximumThresh which states
+    %       that in order to be a maximum it has to be bigger than this
+    %       value
+
+% Input
+%   dataFolder          The "Data" file path appended to the end of the
+%                           data folder
+%   nNumOfReplicates    The number of replicates 
+%   replicateNames      The names of the replicate folders 
+%   asPlotTitles        string array; All the plot titles (constantly
+%                           updated)
+% Output
+%   asPlotTitles        string array; all the plot titles (constantly
+%                           updated)
+
+    % Local Variables
+    %   bCharMass       Boolean; if 1, look for mass in file; otherwise no
+
+    % Assign boolean value
+    bCharMass = 1; 
+
+    % Store assumed number of scan rates
+    nScanRates = 6; 
+
+%     %% Find the local maxima current of acceptable plots (6 peaks)
+    % Load in data
+    time_current_data = readInData(dataFolder, nNumOfReplicates, replicateNames, VariableNames, nProcess, xVar, yVar, bCharMass);
+    time_cycle_data = readInData(dataFolder, nNumOfReplicates, replicateNames, VariableNames, nProcess, 'time/s', 'cycle number', 0); 
+    voltage_current_data = readInData(dataFolder, nNumOfReplicates, replicateNames, VariableNames, nProcess, 'Ewe/V', 'I/mA', 0);
+
+    % Intialize number of formulas
+    nNumOfFormulas = length(time_current_data(1).Step(nProcess).Key); 
+
+    for iFormula = 1 : length(time_current_data(1).Step(nProcess).Key)
+        % Store the # of valid reps each formula has
+        FormulasWitReplicatesWithSixPeaks(iFormula).nNumOfReplicates = nNumOfReplicates;
+
+        % Store the # of valid reps each scan rate for each formula has
+        anScanRatesWithNumOfReplicates(iFormula).anNumOfRepsPerScanRate = nNumOfReplicates * ones(1, nScanRates);  
+
+        for iReplicate = 1 : nNumOfReplicates
+            % Load in your time (hr) and current (mA/g) data
+            xTime_raw = time_current_data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 1); 
+            yCurrent_raw = time_current_data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 2); 
+
+            % Transform x and y data accordingly
+            xHour = xTime_raw / 3600; 
+            yCurrent = yCurrent_raw / time_current_data(iReplicate).Step(nProcess).Key(iFormula).fCharMass; 
+
+            % Create a new structure for each formula 
+            cycle_change_times_formula(iFormula).change_indices = []; 
+
+            % Store the cycle data
+            yCycle_raw = time_cycle_data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 2); 
+
+            % Loop through cycle number column
+            iCycleChange = 1; 
+            cycle_change_times_formula(iFormula).change_indices(1) = iCycleChange;
+
+            % Find change indices
+            iIndex = 1; 
+            while iIndex <= length(xHour)
+                % Check if yCycle has increased
+                if yCycle_raw(iIndex) > yCycle_raw(cycle_change_times_formula(iFormula).change_indices(end))
+                    cycle_change_times_formula(iFormula).change_indices(end+1) = iIndex; 
+                end
+                
+                % Increment iIndex
+                iIndex = iIndex + 1; 
+            end
+
+%             %% Find local maxima
+            % Initialize segment array
+            allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums = [];
+            allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices = [];
+
+            % Create nMinimum Threshold
+            nMinMaximumThresh = 10; 
+
+            % Get the local maxima of each segment 
+            iSegment = 1; 
+            while iSegment <= length(cycle_change_times_formula(iFormula).change_indices)
+                % Check to see if we are in the last segment
+                if iSegment == length(cycle_change_times_formula(iFormula).change_indices)
+                    % Get the beginning and ending indices
+                    nBeginning = cycle_change_times_formula(iFormula).change_indices(iSegment); 
+                    nEnding = length(xHour); 
+                else
+                    % Get the beginning and ending indices
+                    nBeginning = cycle_change_times_formula(iFormula).change_indices(iSegment); 
+                    nEnding = cycle_change_times_formula(iFormula).change_indices(iSegment + 1) - 1; 
+                end
+
+                fSegmentMax = 0; 
+                nMaxIndex = nBeginning; 
+                for nIndex = nBeginning : nEnding
+                    % Find the smallest value is > nThreshold
+                    if yCurrent(nIndex) > fSegmentMax && yCurrent(nIndex) > nMinMaximumThresh
+                        fSegmentMax = yCurrent(nIndex); 
+                        nMaxIndex = nIndex; 
+                    end
+                end
+                 
+                % Store all of the minimas in a different structure
+                allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums(iSegment) = fSegmentMax; 
+                allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices(iSegment) = nMaxIndex; 
+
+                % Increment the segment
+                iSegment = iSegment + 1; 
+            end
+
+            % Assign maximum values variable
+            anSegmentMaximums = allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums;
+
+            % Strip away all 0's from array
+            anIndicesToRemove = [];
+            for i = 1 : length(anSegmentMaximums)
+                if anSegmentMaximums(i) == 0
+                    anIndicesToRemove(end+1) = i;
+                end
+            end
+
+            % Remove all appropriate indices from maximums and indices
+            allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums(anIndicesToRemove) = []; 
+            allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices(anIndicesToRemove) = []; 
+
+            % Update anSegmentMaximums and maxima indices
+            anSegmentMaximums = allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums;
+            anMaximaIndices = allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices; 
+
+            % Record where the scan rate is cut off
+            iCutOffScanRate = length(anSegmentMaximums); 
+
+            % Check to make sure there are at least 6 peaks
+            if length(anSegmentMaximums) >= 6
+                % Sort the segment maximums in descending order and store indices to capture the largest 6
+                [~, indices] = sort(allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums, 'descend'); 
+                anValuableIndices = indices(1:6); 
+    
+                % Store the important indices (the smallest ones)
+                allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices = allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices(anValuableIndices);
+                allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums = allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums(anValuableIndices); 
+    
+                % Sort local maxima according to time that they happen
+                [~, timeSortedIndices] = sort(xHour(allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices), 'ascend'); 
+    
+                % Store the maxIndices and segmentMaximums in timeSorted way
+                allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices = allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices(timeSortedIndices); 
+                allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums = allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums(timeSortedIndices); 
+    
+%                 %%  Print the maximum of each segment
+%                 iSegment = 1; 
+%                 while iSegment <= 6
+%                     fSegmentMax =  allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums(iSegment); 
+%                     nMaxIndex = allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices(iSegment); 
+%                     fprintf('Max of segment %d (of %s): %f at second %f\n', iSegment, time_current_data(iReplicate).Step(nProcess).Key(iFormula).cupID, fSegmentMax, xTime_raw(nMaxIndex));
+%     
+%                     % Increment segment
+%                     iSegment = iSegment + 1; 
+%                 end
+%                 fprintf('\n')
+    
+%                 %% Plot the vertical lines & the local mimima 
+%                 sGraphTitle = "Replicate " + iReplicate + ", " + sDataType + " (Step " + nProcess + ", Peak Current) - " + getFormulaName(time_current_data(iReplicate).Step(nProcess).Key(iFormula).cupID(1:2)); 
+%                 [nFigNum, asPlotTitles] = checkAvailability(asPlotTitles, sGraphTitle); 
+%                 figure(nFigNum)
+%     
+%                 % Check to see if there are more than 6 minimums
+%                 if length(allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices) > 6 
+%                     plot(xHour, yCurrent, 'r.')
+%                 else
+%                     plot(xHour, yCurrent, 'k.')
+%                 end
+%                 hold on; 
+%                 title(sGraphTitle)
+%                 xlabel('Time (hrs)')
+%                 ylabel('Current (mA)')
+%                 xline(xHour(cycle_change_times_formula(iFormula).change_indices))
+%                 plot(xHour(allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices), yCurrent(allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices), '*b')
+            
+%                 %% Store the potential values at the location of highest current
+                % Load in your voltage and current data
+                xVoltage_raw = voltage_current_data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 1); 
+    
+                % Store the local minima indicec
+                anMaximaIndices = allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices; 
+    
+                % Locate the peak voltage at the index of lowest current
+                results(iReplicate).Formula(iFormula).afMaxVoltagePeaks = xVoltage_raw(anMaximaIndices); 
+
+                % Plot the maxima 
+%                 sGraphTitle = "Replicate " + iReplicate + ", " + sDataType + " (Step " + nProcess + ", Voltage-Current) - " + getFormulaName(voltage_current_data(iReplicate).Step(nProcess).Key(iFormula).cupID(1:2)); 
+%                 [nFigNum, asPlotTitles] = checkAvailability(asPlotTitles, sGraphTitle); 
+%                 figure(nFigNum)
+%                 % Check to see if there are more than 6 minimums
+%                 if length(allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices) > 10 
+%                     plot(xVoltage_raw, yCurrent, 'r.')
+%                 else
+%                     plot(xVoltage_raw, yCurrent, 'k.')
+%                 end
+%                 hold on; 
+%                 title(sGraphTitle)
+%                 xlabel('Potential (V)')
+%                 ylabel('Current (mA/g)')
+%                 plot(xVoltage_raw(anMaximaIndices), yCurrent(anMaximaIndices), '*b')
+       
+            % If there are less than 6 peaks
+            else
+                % Read in the voltage data in here as well
+                xVoltage_raw = voltage_current_data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 1); 
+
+                % Store the maximums in results
+                results(iReplicate).Formula(iFormula).afMaxVoltagePeaks = xVoltage_raw(anMaximaIndices); 
+
+%                 results(iReplicate).Formula(iFormula).afMaxVoltagePeaks
+
+                % Reduce the number of formulas with replicates that have 6 peaks
+                FormulasWitReplicatesWithSixPeaks(iFormula).nNumOfReplicates = FormulasWitReplicatesWithSixPeaks(iFormula).nNumOfReplicates - 1;
+
+                % Reduce the number of replicas that the scan rate has recorded
+                anScanRatesWithNumOfReplicates(iFormula).anNumOfRepsPerScanRate = anScanRatesWithNumOfReplicates(iFormula).anNumOfRepsPerScanRate  - [zeros(1, iCutOffScanRate) ones(1, nScanRates - iCutOffScanRate)]; %anScanRatesWithNumOfReplicates(iFormula).anNumOfRepsPerScanRate(iCutOffScanRate+1 : end) - 1; 
+               
+                % Print out which replicate and which formula
+%                 fprintf("Replicate %d of Formula %s does not have a peak\n", iReplicate, time_current_data(iReplicate).Step(nProcess).Key(iFormula).cupID)
+
+                % Plot this maxima anyways
+%                 sGraphTitle = "Replicate " + iReplicate + ", " + sDataType + " (Step " + nProcess + ", Peak Current) - " + getFormulaName(time_current_data(iReplicate).Step(nProcess).Key(iFormula).cupID(1:2)); 
+%                 [nFigNum, asPlotTitles] = checkAvailability(asPlotTitles, sGraphTitle); 
+%                 figure(nFigNum)
+%     
+%                 % Check to see if there are more than 6 minimums
+%                 if length(allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices) > 6 
+%                     plot(xHour, yCurrent, 'r.')
+%                 else
+%                     plot(xHour, yCurrent, 'k.')
+%                 end
+%                 hold on; 
+%                 title(sGraphTitle)
+%                 xlabel('Time (hrs)')
+%                 ylabel('Current (mA)')
+%                 xline(xHour(cycle_change_times_formula(iFormula).change_indices))
+%                 plot(xHour(allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices), yCurrent(allLocalMaxima(iReplicate).Formula(iFormula).anMaxIndices), 'b*')
+            end 
+        end 
+    end
+
+%     %% Normalize the stuff
+    for iFormula = 1 : length(time_current_data(1).Step(nProcess).Key)
+        for iReplicate = 1 : nNumOfReplicates
+            % Store the segment maximums to be normalized
+            afSegmentMaximums = allLocalMaxima(iReplicate).Formula(iFormula).anSegmentMaximums; 
+
+            % Store the final value from step 3
+            fNormalizingValue = results(iReplicate).Formula(iFormula).finalDischargeCapacity; 
+
+            % Divide by the final value from step 3 for each step 
+            afNormalizedMaximums(iReplicate).Formula(iFormula).afNormalized = afSegmentMaximums / fNormalizingValue; 
+        end
+    end
+
+%     %% Average the A/Ah
+    for iFormula = 1 : length(time_current_data(1).Step(nProcess).Key)
+        % Initialize the sum
+        afSumOfNormalizedPeaks = zeros(1, 6);
+
+        % Calculate the sum
+        for iScanRate = 1 : nScanRates
+            for iReplicate = 1 : anScanRatesWithNumOfReplicates(iFormula).anNumOfRepsPerScanRate(iScanRate)
+                % Get the peak you will add
+                fPeak = afNormalizedMaximums(iReplicate).Formula(iFormula).afNormalized(iScanRate); 
+                
+                % add the peaks together
+                afSumOfNormalizedPeaks(iScanRate) = afSumOfNormalizedPeaks(1, iScanRate) + fPeak; 
+            end
+
+            afAverage(iScanRate) = afSumOfNormalizedPeaks(iScanRate) / anScanRatesWithNumOfReplicates(iFormula).anNumOfRepsPerScanRate(iScanRate); 
+        end
+
+        % Store the average
+        AverageNormalizedPeakCurrent(iFormula).afAverage = afAverage; 
+        AverageNormalizedPeakCurrent(iFormula).sFormula = time_current_data(1).Step(nProcess).Key(iFormula).formula; 
+    end
+
+    %% Normalized Discharge Rate
+    % Store the scan rate values
+    x = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5]; 
+    anScanRate = sqrt(x);  
+
+    % Create array of unique colors
+%     colors = [[0, 0, 0]; [0, 1, 0]; [0, 0, 1]; [1, 0, 0]; [1, 0, 1]; [0, 1, 1]; [0.4, 0, 0.4]; [1, 0.6, 0]];
+    colors = [[0, 0, 0]; [0, 1, 0]; [0, 0, 1]; [1, 0, 0]; [1, 0, 1]; [0, 1, 1]; [0, 0.5, 0]; [1, 0.6, 0]; [0, 128/255, 1]; [128/255, 0, 1]; [132/255, 186/255, 91/255]; [0.5, 0.5, 0.5]];
+
+    % Plot each formula on the graph 
+    sGraphTitle = ' Disharge Rate Normalized (High Dose)'; 
+    [nFigNum, asPlotTitles] = checkAvailability(asPlotTitles, sGraphTitle); 
+    figure(nFigNum)
+    figureLocationX = 300; 
+    figureLocationY = 100; 
+    width = 800; 
+    height = 800; 
+    set(gcf, 'Position', [figureLocationX, figureLocationY, width, height])
+
+    for iFormula = 1 : length(time_cycle_data(1).Step(nProcess).Key)
+        plots(iFormula) = plot(anScanRate, AverageNormalizedPeakCurrent(iFormula).afAverage, '*', "DisplayName", AverageNormalizedPeakCurrent(iFormula).sFormula, "Color", colors(iFormula, :));
+        hold on; 
+        xlabel('Scan Rate (sqrt(mV/s))')
+        ylabel('Normalized Discharge Rate (A/Ah)')
+
+        % Fit line to points
+        xLimits_current = get(gca, 'xlim'); 
+        
+        [p, S] = polyfit(anScanRate, AverageNormalizedPeakCurrent(iFormula).afAverage, 1); 
+        
+        x1 = linspace(xLimits_current(1), xLimits_current(2)); 
+        y1 = polyval(p, x1);
+
+        LinRegression(iFormula).aXData = x1; 
+        LinRegression(iFormula).aYData = y1; 
+    end  
+
+    for iFormula = 1: length(time_cycle_data(1).Step(nProcess).Key)
+        plot(LinRegression(iFormula).aXData, LinRegression(iFormula).aYData, 'REPLACE_WITH_DASH_DASH', "Color", colors(iFormula, :))
+    end
+    hold off; 
+    lgd = legend(plots, 'FontSize', 10, "Location", "best");
+
+    %% Final Discharge Rates for Every Replicate
+    fprintf("\nFinal Discharge Rates for Every Replicate \n")
+    for iFormula = 1 : length(time_current_data(1).Step(nProcess).Key)
+        for iReplicate = 1 : nNumOfReplicates
+            fprintf("Replicate %d (%s) of Formula %s at 0.5 mV/s: %f\n", iReplicate, time_current_data(iReplicate).Step(nProcess).Key(iFormula).cupID, AverageNormalizedPeakCurrent(iFormula).sFormula, afNormalizedMaximums(iReplicate).Formula(iFormula).afNormalized(end));
+        end
+        fprintf("\n")
+    end
+
+    % Print column of values
+    for iFormula = 1 : length(time_current_data(1).Step(nProcess).Key)
+        for iReplicate = 1 : nNumOfReplicates
+            fprintf("%f \n", afNormalizedMaximums(iReplicate).Formula(iFormula).afNormalized(end))
+        end
+    end
+
+    fprintf('\n')
+
+    %% Average Normalized Discharge Rate at Square Root of Every Scan Rate
+    for iFormula = 1 : length(time_current_data(1).Step(nProcess).Key)
+        counter = 1; 
+        for fScanRate = anScanRate             
+%             fprintf("Formula %s at square root of scan rate %f: %f \n", AverageNormalizedPeakCurrent(iFormula).sFormula, fScanRate, AverageNormalizedPeakCurrent(iFormula).afAverage(counter))
+            fprintf("Formula %s at square root of scan rate %f (%.4f): %f \n", AverageNormalizedPeakCurrent(iFormula).sFormula, x(counter), fScanRate, AverageNormalizedPeakCurrent(iFormula).afAverage(counter))
+            counter = counter + 1; 
+        end
+        fprintf('\n')
+    end
+
+    %% Final Discharge Rates (average)
+    for iFormula = 1 : nNumOfFormulas
+        fprintf("Discharge rate at 0.5 mV/s of formula %s: %f \n", AverageNormalizedPeakCurrent(iFormula).sFormula, AverageNormalizedPeakCurrent(iFormula).afAverage(end))
+    end
+
+    for iFormula = 1 : nNumOfFormulas
+        fprintf("%f \n", AverageNormalizedPeakCurrent(iFormula).afAverage(end))
+    end
+
+   %% Polarization Analysis
+   % Substract the two peaks (MB_03 - MB_04) for every rep of every formula
+   afAverage = zeros(1, nScanRates); 
+
+   for iFormula = 1 : nNumOfFormulas
+       afDeltaPolarization(iFormula).Values = [];
+       for iScanRate = 1 : nScanRates
+           % Fill in Delta polarization
+           for iReplicate = 1 : anScanRatesWithNumOfReplicates(iFormula).anNumOfRepsPerScanRate(iScanRate)
+               % Store the min and max peaks
+               afMinPeak = results(iReplicate).Formula(iFormula).afMinVoltagePeaks(iScanRate); 
+
+               afMaxPeak = results(iReplicate).Formula(iFormula).afMaxVoltagePeaks(iScanRate); 
+
+               % Calculate the delta polarization
+               afDeltaPolarization(iFormula).Values(iReplicate, iScanRate) = afMaxPeak - afMinPeak; 
+           end
+       end
+
+       % Initialize the sum for each formula
+       afFormulaSum(iFormula, :) = zeros(1, nScanRates); 
+
+       for iScanRate = 1 : nScanRates
+           % Sum the scan rates along the replicates
+           for iReplicate = 1 : anScanRatesWithNumOfReplicates(iFormula).anNumOfRepsPerScanRate(iScanRate)
+               afFormulaSum(iFormula, iScanRate) = afFormulaSum(iFormula, iScanRate) + afDeltaPolarization(iFormula).Values(iReplicate, iScanRate); 
+           end
+           
+           % Calculate the average
+           afAverage(iScanRate) = afFormulaSum(iFormula, iScanRate) / anScanRatesWithNumOfReplicates(iFormula).anNumOfRepsPerScanRate(iScanRate); 
+       end
+
+       % Store the average
+        AverageNormalizedPolarization(iFormula).afAverage = afAverage; 
+        AverageNormalizedPolarization(iFormula).sFormula = time_current_data(1).Step(nProcess).Key(iFormula).formula;
+   end
+
+   % Plot polarization vs scan rate
+   anScanRate = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5]; 
+
+   % Create array of unique colors
+%     colors = [[0, 0, 0]; [0, 1, 0]; [0, 0, 1]; [1, 0, 0]; [1, 0, 1]; [0, 1, 1]; [0.4, 0, 0.4]; [1, 0.6, 0]];
+
+   % Create array of unique colors
+%    colors = [[0, 0, 0]; [0, 1, 0]; [0, 0, 1]; [1, 0, 0]; [1, 0, 1]; [0, 1, 1]; [0.4, 0, 0.4]; [1, 0.6, 0]];
+    colors = [[0, 0, 0]; [0, 1, 0]; [0, 0, 1]; [1, 0, 0]; [1, 0, 1]; [0, 1, 1]; [0, 0.5, 0]; [1, 0.6, 0]; [0, 128/255, 1]; [128/255, 0, 1]; [132/255, 186/255, 91/255]; [0.5, 0.5, 0.5]];
+
+   % Plot each formula on the graph 
+   sGraphTitle = ' Polarization vs Scan Rate (mV/s)'; 
+   [nFigNum, asPlotTitles] = checkAvailability(asPlotTitles, sGraphTitle); 
+   figure(nFigNum)
+   figureLocationX = 300; 
+   figureLocationY = 100; 
+   width = 800; 
+   height = 800; 
+   set(gcf, 'Position', [figureLocationX, figureLocationY, width, height])
+
+   % Create objective function for fitting
+    sqrtFunc = @(p, x) p(1) * (x .^ p(2)) + p(3);
+
+   for iFormula = 1 : nNumOfFormulas
+       plots(iFormula) = plot(anScanRate, AverageNormalizedPolarization(iFormula).afAverage, '*', "DisplayName", AverageNormalizedPeakCurrent(iFormula).sFormula, "Color", colors(iFormula, :));
+       hold on; 
+       xlabel('Scan Rate (mV/s)')
+       ylabel('Charge-Discharge Polarization (V)')
+
+       % Fit to curve
+       params = fitPowerCurve(sqrtFunc, anScanRate, AverageNormalizedPolarization(iFormula).afAverage); 
+
+       % Store curves
+       curves(iFormula).aXData = linspace(min(anScanRate), max(anScanRate), 100); 
+       curves(iFormula).aYData = sqrtFunc(params, curves(iFormula).aXData); 
+   end  
+
+   for iFormula = 1: length(time_cycle_data(1).Step(nProcess).Key)
+       plot(curves(iFormula).aXData, curves(iFormula).aYData, 'REPLACE_WITH_DASH_DASH', "Color", colors(iFormula, :))
+   end
+   hold off; 
+   lgd = legend(plots, 'FontSize', 10, "Location", "best");
+
+   %% Polarization Values at Scan Rate 0.1 mV/s for Every Replicate
+   fprintf("\nPolarization Values at Scan Rate 0.1 mV/s for Every Replicate\n")
+   for iFormula = 1 : nNumOfFormulas
+       for iReplicate = 1 : nNumOfReplicates
+           fprintf("Replicate %d (%s) of Formula %s at 0.1 mV/s: %f \n", iReplicate, time_current_data(iReplicate).Step(nProcess).Key(iFormula).cupID, AverageNormalizedPolarization(iFormula).sFormula, afDeltaPolarization(iFormula).Values(iReplicate, 4))
+%             afDeltaPolarization(iFormula).Values(iReplicate, :)
+%             replicateData(iReplicate).Step(nCurrentStepNumber).Key(cupDict(sFilePrefix)).cupID
+       end
+       fprintf('\n')
+   end
+
+   % Print columns of values
+   for iFormula = 1 : nNumOfFormulas
+       for iReplicate = 1 : nNumOfReplicates
+           fprintf("%f \n", afDeltaPolarization(iFormula).Values(iReplicate, 4))
+       end
+   end
+
+
+   %% Polarization values at scan rate 0.1 mV/s (average)
+   fprintf("\n")
+   for iFormula = 1 : nNumOfFormulas
+       fprintf("Polarization of formula %35s at scan rate 0.1: %f \n", AverageNormalizedPolarization(iFormula).sFormula, AverageNormalizedPolarization(iFormula).afAverage(4))
+   end
+
+   for iFormula = 1 : nNumOfFormulas
+       fprintf("%f \n", AverageNormalizedPolarization(iFormula).afAverage(4))
+   end
+end
+
+function[asPlotTitles] = runMB_OverlayChargePlots(dataFolder, replicateNames, VariableNames, nNumOfReplicates, asPlotTitles)
+% This function will read in the whole table (as many columns are needed),
+% will call the readInTable and selectDataSubsets function, and produce the
+% overlayed charge plots of Current (mA/g) vs Potential (V). 
+% Input
+%
+% Output
+%
+
+    % Local Variables
+    %
+
+    %% Overlay Charge Plots
+    % Initialize xVar, yVar, bCharMass
+    xVar = 'Ewe/V'; 
+    yVar = 'I/mA'; 
+    bCharMass = 1; 
+    nChargeProcess = 3; 
+
+    % Read in charge data
+    Chargedata = readInData(dataFolder, nNumOfReplicates, replicateNames, VariableNames, nChargeProcess, xVar, yVar, bCharMass);
+
+    % Read in discharge data 
+    nDishargeProcess = 4; 
+    dischargeData = readInData(dataFolder, nNumOfReplicates, replicateNames, VariableNames, nDishargeProcess, xVar, yVar, bCharMass); 
+
+    % Obtain the number of formulas based on replicate 1 folder
+    nNumOfFormulas = length(Chargedata(1).Step(3).Key); 
+
+    % Create color key
+%     colors = [[0, 0, 0]; [0, 1, 0]; [0, 0, 1]; [1, 0, 1]; [1, 0, 0]; [0, 1, 1]; [0.4, 0, 0.4]; [1, 0.6, 0]];
+    colors = [[0, 0, 0]; [0, 1, 0]; [0, 0, 1]; [1, 0, 0]; [1, 0, 1]; [0, 1, 1]; [0, 0.5, 0]; [1, 0.6, 0]; [0, 128/255, 1]; [128/255, 0, 1]; [132/255, 186/255, 91/255]; [0.5, 0.5, 0.5]];
+
+    % Loop through every formula of every replicate
+    for iFormula = 1 : nNumOfFormulas
+        % Store the formula name (Use first replicate)
+        sFormulaName = Chargedata(1).Step(nChargeProcess).Key(iFormula).formula; 
+
+        % Create plot title
+        sGraphTitle = "Overlayed Charge/Discharge Curves: " + convertCharsToStrings(sFormulaName); 
+        [nFigNum, asPlotTitles] = checkAvailability(asPlotTitles, sGraphTitle); 
+        figure(nFigNum)
+
+        % Create legend cell array
+        legendNames = {}; 
+
+        % Loop through Charge replicates
+        for iReplicate = 1 : nNumOfReplicates
+            % Initialize color 
+            afColor = colors(iReplicate, :); 
+
+            % Load in table for replicate of current formula
+            fullTable = Chargedata(iReplicate).Step(nChargeProcess).Key(iFormula).fullTable; 
+
+            % Get the ns column of fullTable
+            ns = fullTable.('NS');  
+
+            % Initialize beginning and ending index arrays
+            anBeginIndex = [];
+            anEndIndex = []; 
+
+            % Loop through the column and record the valuable index ranges
+            iSequence = 1; 
+            iBegin = 1; 
+            iEnd = 1; 
+            while iSequence < length(ns)
+                % Check to make sure that it is every 6
+                if mod(ns(iSequence), 6) == 3 && length(anBeginIndex) == length(anEndIndex)
+                    % Record the sequence index 
+                    anBeginIndex(iBegin) = iSequence; 
+
+                    % Update beginning index
+                    iBegin = iBegin + 1; 
+                end
+
+                % Check if ns is now the value after the recorded seq
+                if ~isempty(anBeginIndex) && length(anEndIndex) < length(anBeginIndex) && ns(iSequence) > ns(anBeginIndex(end)) 
+                    % Record the sequence index
+                    anEndIndex(iEnd) = iSequence - 1; 
+
+                    % Update ending index
+                    iEnd = iEnd + 1; 
+                end
+                iSequence = iSequence + 1; 
+            end
+
+            % Get the x and y data; store the mass
+            xPotential = Chargedata(iReplicate).Step(nChargeProcess).Key(iFormula).dat(:, 1); 
+            yCurrent_raw = Chargedata(iReplicate).Step(nChargeProcess).Key(iFormula).dat(:, 2); 
+
+            % Fix the data
+            fCharMass = Chargedata(iReplicate).Step(nChargeProcess).Key(iFormula).fCharMass; 
+            yCurrent = yCurrent_raw / fCharMass; 
+
+            % Plot the ranges of data
+            for iIndices = 1 : length(anBeginIndex)
+                % Initialize current range 
+                range = [anBeginIndex(iIndices) : anEndIndex(iIndices)];
+
+                hold on; 
+                % Plot the curve
+                if iIndices == 1
+                    chargePlots(iReplicate).Sequence(iIndices) = plot(xPotential(range), yCurrent(range), Color=afColor, DisplayName=replicateNames{iReplicate});
+                    xlabel('Potential (V)')
+                    ylabel('Current (mA/g)')
+                    title(sGraphTitle)
+                else
+                    plot(xPotential(range), yCurrent(range), Color=afColor)
+                end
+            end
+        end      
+
+        % Loop through Discharge replicates
+        for iReplicate = 1 : nNumOfReplicates
+            % Initialize color
+            afColor = colors(iReplicate, :); 
+
+            % Load in table for replicate of current formula
+            fullTable = dischargeData(iReplicate).Step(nDishargeProcess).Key(iFormula).fullTable; 
+
+            % Get the ns column of fulltable
+            ns = fullTable.('NS'); 
+
+            % Initialize beginning and ending index arrays
+            anBeginIndex = []; 
+            anEndIndex = []; 
+
+            % Loop through the column and record the valuable index ranges
+            iSequence = 1; 
+            iBegin = 1; 
+            iEnd = 1; 
+            while iSequence <= length(ns)
+                % Check to make sure that it is every 6
+                if mod(ns(iSequence), 6) == 1 && length(anBeginIndex) == length(anEndIndex)
+                    % Record the sequence index 
+                    anBeginIndex(iBegin) = iSequence; 
+
+                    % Update beginning index
+                    iBegin = iBegin + 1; 
+                end
+
+                % Check if ns is now the value after the recorded seq
+                if (iSequence == length(ns)) || (~isempty(anBeginIndex) && length(anEndIndex) < length(anBeginIndex) && ns(iSequence) > ns(anBeginIndex(end))) 
+                    % Record the sequence index
+                    anEndIndex(iEnd) = iSequence - 1; 
+
+                    % Update ending index
+                    iEnd = iEnd + 1; 
+                end
+                iSequence = iSequence + 1; 
+            end
+            
+            % Get the x and y data; store the mass
+            xPotential = dischargeData(iReplicate).Step(nDishargeProcess).Key(iFormula).dat(:, 1); 
+            yCurrent_raw = dischargeData(iReplicate).Step(nDishargeProcess).Key(iFormula).dat(:, 2); 
+
+            % Fix the data
+            fCharmass = dischargeData(iReplicate).Step(nDishargeProcess).Key(iFormula).fCharMass; 
+            yCurrent = yCurrent_raw / fCharMass; 
+
+            % Plot the ranges of data
+            for iIndices = 1 : length(anBeginIndex)
+                % Initialize current range
+                range = [anBeginIndex(iIndices) : anEndIndex(iIndices)]; 
+
+                hold on; 
+
+                % Plot the curve
+                if iIndices == 1
+                    dischargePlots(iReplicate).Sequence(iIndices) = plot(xPotential(range), yCurrent(range), Color=afColor, DisplayName=replicateNames{iReplicate}); 
+                    xlabel('Potential(V)')
+                    ylabel('Current (mA/g)')
+                else
+                    plot(xPotential(range), yCurrent(range), Color=afColor)
+                end
+            end
+        end
+                
+        % Place the legend
+        legend()
+
+        % Remove all of the text that does not contain "Replicate"
+        hLegend = findobj(gcf, 'Type', 'Legend'); 
+
+        valuableLegend = {}; 
+
+        for iTitle = 1 : length(hLegend.String)
+            if contains(hLegend.String{iTitle}, 'Replicate')
+                valuableLegend{end+1} = hLegend.String{iTitle};
+            end
+        end         
+
+        hold off; 
+
+        % Create array that contains the different line sequences
+        valuableLines = []; 
+        for iSequence = 1 : nNumOfReplicates
+            valuableLines(end+1) = chargePlots(iSequence).Sequence; 
+        end
+
+        % Produce the final legend
+        legend(valuableLines, valuableLegend, 'FontSize', 10, "Location", "best")
+        
+    end
+end
+
+% RUN CA PROCEDURE
+function[asPlotTitles] = runCAProcedure(dataFolder, nNumOfReplicates, replicateNames, asPlotTitles)
+% The runCAProcedure will run analysis on the CA files in the data folder.
+% There is only one CA step which does require the header. We will plot
+% mA/g vs time (either in minutes or in hours). 
+
+% Input
+%   dataFolder          The "Data" file path appended to the end of the
+%                           data folder
+%   nNumOfReplicates    The number of replicates 
+%   replicateNames      The names of the replicate folders 
+%   asPlotTitles        string array; All the plot titles (constantly
+%                           updated)
+% Output
+%   asPlotTitles        string array; all the plot titles (constantly
+%                           updated)
+
+    % Local Variable
+    %   sDataType           String; the data we are looking at
+    %   xVar                String; the x-variable we want plotted
+    %   yVar                String; the y-variable we want plotted
+    %   sXLabel             String; the x label
+    %   sYLabel             String; the y label
+    %   VariableNames       structure; the variable names for the data
+
+
+    % Set datatype 
+    sDataType = "CA"; 
+
+    % Define variable names
+    VariableNames = {'mode', 'ox/red', ...
+                    'error', 'control changes', 'NS changes', ...
+                    'counter inc.', 'Ns', 'time/s' 'control/V', 'Ewe/V',... 
+                    'I/mA', 'dQ/C', '(Q-Qo)/C', 'I Range', ...
+                    'Energy charge/W.h', 'Energy discharge/W.h', ...
+                    'Capacitance charge/mF', 'Capacitance discharge/mF', ...
+                    'Q discharge/mA.h', 'Q charge/mA.h', 'Capacity/mA.h', ...
+                    'Efficiency/%', 'cycle number', 'P/W'};
+
+    %% 2. CA
+    % Define x and y variables
+    xVar = 'time/s'; 
+    yVar = 'I/mA'; 
+
+    % Define x and y variable names
+    sXLabel = 'Time (hrs)';
+    sYLabel = 'Current (mA/g)'; 
+
+    asPlotTitles = runGeneralReplicatePlot(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, sXLabel, sYLabel, 2, asPlotTitles);
+end 
+
+% RUN OCV PROCEDURE
+function[asPlotTitles] = runOCVProcedure(dataFolder, nNumOfReplicates, replicateNames, asPlotTitles)
+% The runOCVProcedure will take in the varaibles we want to plot, the
+% dataFolder, the number of replicates as well as their names. The function
+% will also differentiate at what step of the OCV we are looking at. 
+% Input
+%   dataFolder          The "Data" file path appended to the end of the
+%                           data folder
+%   nNumOfReplicates    The number of replicates 
+%   replicateNames      The names of the replicate folders 
+%   asPlotTitles        string array; All the plot titles (constantly
+%                           updated)
+% Output
+%   asPlotTitles        string array; all the plot titles (constantly
+%                           updated
+
+    % Local Variables
+    %   sDataType           String; the data we are looking at
+    %   xVar                String; the x-variable we want plotted
+    %   yVar                String; the y-variable we want plotted
+    %   sXLabel             String; the x label
+    %   sYLabel             String; the y label
+    %   VariableNames       structure; the variable names for the data
+
+    % Set datatype
+    sDataType = "OCV"; 
+
+    % Define variable Names
+    VariableNames = {'mode', 'error', 'time', 'Ewe/V'}; 
+
+    % Define process number
+    nProcess = 1; 
+
+    % Define x and y terms
+    xVar = 'time'; 
+    yVar = 'Ewe/V';
+
+    % Define the x and ylabels
+    sXLabel = 'Time (s)'; 
+    sYLabel = 'Potential (V)'; 
+
+    %% OCV Plots
+    % Run general replicate
+    asPlotTitles = runGeneralReplicatePlot(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, sXLabel, sYLabel, nProcess, asPlotTitles); 
+    hold off; 
+
+    %% OCV Average Plot
+    % Plot averages
+    asPlotTitles = runOCVDataAnalysis(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, asPlotTitles, nProcess);
+end
+
+function[asPlotTitles] = runOCVDataAnalysis(sDataType, dataFolder, nNumOfReplicates, replicateNames, VariableNames, xVar, yVar, asPlotTitles, nProcess)
+% This function will run the necessary data analysis process on the OCV
+% Step. 
+% Input
+%   nProcess        In this case, we will pass the step number into the
+%                       function bc we are performing the same analysis on 
+%                       4 different files (so we can't define the process
+%                       here)
+% Output
+% 
+   
+    % Local variables
+    %
+
+    % Load the appropriate data into a data structure
+    data = readInData(dataFolder, nNumOfReplicates, replicateNames, VariableNames, nProcess, xVar, yVar, 0);
+
+    % Average Plot
+    % Issue: Not all the replicates have the same amount of data
+
+    % Solution: Find the one with the lowest amount of data
+    
+    % Find and store the smallest set of data for each formula
+    for iFormula = 1 : length(data(1).Step(nProcess).Key)
+        shortest = inf; 
+        for iReplicate = 1 : nNumOfReplicates
+            % Find the smallest data set and use that
+            if data(iReplicate).Step(nProcess).Key(iFormula).amountOfX < shortest
+                whichShortest(iFormula).shortest = data(iReplicate).Step(nProcess).Key(iFormula).amountOfX;
+                shortest = data(iReplicate).Step(nProcess).Key(iFormula).amountOfX; 
+            end
+        end
+    end
+ 
+    % Plot the averages on one graph
+    % Create the plot title
+    sGraphTitle = sDataType + "(Step " + nProcess + ")"+ " Plot of Averages"; 
+
+    % Check to see if this graph title is available for use
+    [nFigNum, asPlotTitles] = checkAvailability(asPlotTitles, sGraphTitle);
+
+    % Hardcoded graph colors
+%     colors = [[0, 0, 0]; [0, 1, 0]; [0, 0, 1]; [1, 0, 0]; [1, 0, 1]; [0, 1, 1]; [0.4, 0, 0.4]; [1, 0.6, 0]];
+    colors = [[0, 0, 0]; [0, 1, 0]; [0, 0, 1]; [1, 0, 0]; [1, 0, 1]; [0, 1, 1]; [0, 0.5, 0]; [1, 0.6, 0]; [0, 128/255, 1]; [128/255, 0, 1]; [132/255, 186/255, 91/255]; [0.5, 0.5, 0.5]];
+
+    for iFormula = 1 : length(data(1).Step(nProcess).Key)
+        for iReplicate = 1 : nNumOfReplicates
+            % Get the shortest value
+            shortest = whichShortest(iFormula).shortest;
+
+            % Get the complete x and y data
+            x = data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 1); 
+            y = data(iReplicate).Step(nProcess).Key(iFormula).dat(:, 2); 
+            
+            % Crop the data
+            xCropped = x(length(x) - shortest + 1: end); 
+            yCropped = y(length(y) - shortest + 1: end); 
+
+            % Get the cupID
+            sCupID = data(iReplicate).Step(nProcess).Key(iFormula).cupID; 
+
+            % Initialize avgX and avgY
+            if iReplicate == 1
+                sumX = zeros(size(xCropped)); 
+                sumY = zeros(size(yCropped)); 
+            end
+
+            sumX = sumX + xCropped;
+            sumY = sumY + yCropped;
+        end
+        
+        % Calculate the averages 
+        avgX = sumX / nNumOfReplicates; 
+        avgY = sumY / nNumOfReplicates; 
+        
+        % Plot the average values
+        figure(nFigNum)
+        hold on; 
+        plot(avgX, avgY, "DisplayName", getFormulaName(sCupID(1:2)), "Color", colors(iFormula, :))
+
+        title(sGraphTitle)
+        xlabel('Time (s)')
+        ylabel('Potential (V)')
+        legend('Location', 'best'); 
+    end
+    hold off; 
+end
+
+##### SOURCE END #####
+--></body></html>
